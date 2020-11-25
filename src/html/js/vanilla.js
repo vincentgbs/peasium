@@ -1,17 +1,17 @@
 let vanilla = {
     load: async function(div) {
+        vanilla.helloWorldExample(div);
+    },
+    helloWorldExample: async function(div) {
         let displayHello = await vanilla.curl('hello', 'GET', null);
         div.innerHTML = `<div class="form">
             <input type="text" id="getName"/>
             <button id="helloWorld">Hello</button>
             <div id="displayHello">` + displayHello + `</div>
         </div>`;
-        document.querySelector('#helloWorld').onclick = function() {
-            vanilla.helloWorld();
+        document.querySelector('#helloWorld').onclick = async function() {
+            document.querySelector('#displayHello').innerHTML = await vanilla.curl('hello/hello', 'POST', {'name': document.querySelector('#getName').value});
         }
-    },
-    helloWorld: async function() {
-        document.querySelector('#displayHello').innerHTML = await vanilla.curl('hello/hello', 'POST', {'name': document.querySelector('#getName').value});
     },
     xhr: new XMLHttpRequest(),
     curl: function(url, method, body) {
