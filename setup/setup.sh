@@ -13,4 +13,4 @@ apt install -y apache2 # install apache2
 apt install -y php7.4 libapache2-mod-php php7.4-curl php7.4-sqlite3 # install php
 apachectl restart
 
-chmod 777 /var/www/private/sqlite3/
+chmod -R 777 /var/www/private/sqlite3/

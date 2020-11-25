@@ -7,9 +7,9 @@ class helloController {
     }
 
     public function hello() {
-        $data = json_decode(file_get_contents('php://input'), true);
-        if ($data !== NULL) {
-            echo 'Hello ' . $data["name"] . '!';
+        $post = json_decode(file_get_contents('php://input'), true);
+        if ($post !== NULL) {
+            echo 'Hello ' . preg_replace("/[^a-zA-Z]+/", "", $post['name']) . '!';
         } else {
             echo 'Hello _____!';
         }

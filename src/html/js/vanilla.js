@@ -10,7 +10,9 @@ var vanilla = {
         flashMessage.setAttribute('id', 'flashMessage');
         document.body.appendChild(flashMessage);
         /* Hello World! example */
-        vanilla.loadjs('helloworld', true);
+        // vanilla.loadjs('helloworld');
+        /* User Login example */
+        vanilla.loadjs('user');
     },
     loadjs: function(src) {
         let script = document.createElement('script');
