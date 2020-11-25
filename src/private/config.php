@@ -1,6 +1,6 @@
 <?php
 
-define("DEBUG", "OFF");
+define("DEBUG", "ON");
 define("DEFAULTAPP", "hello");
 
 ?>

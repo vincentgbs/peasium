@@ -1,1 +1,3 @@
 .vagrant/*
+src/private/sqlite3/*
+!src/private/sqlite3/.gitkeep
