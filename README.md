@@ -5,6 +5,11 @@ Peasium is an easy-to-use web application framework. We believe development shou
 ## Development Environment
 
 This framework is easiest to develop upon using Vagrant and VirtualBox. "Vagrant lowers development environment setup time, increases production parity, and makes the "works on my machine" excuse a relic of the past." -Vagrant
+* Install VirtualBox
+* Install Vagrant
+* In Terminal, cd to the directory and type `vagrant up` to start the VM
+* After the VM has started, type `vagrant ssh` to tunnel into the VM
+* From inside the VM, cd to the repository directory and run the `setup.sh` script
 
 ### Dependencies
 

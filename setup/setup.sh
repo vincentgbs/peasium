@@ -4,7 +4,7 @@ if [ "$EUID" -ne 0 ]
   then echo 'Please run as root'
   exit
 fi
-# cd cd /vagrant/setup/
+# cd /vagrant/setup/
 # sudo chmod 700 setup.sh
 # sudo ./setup.sh
 
