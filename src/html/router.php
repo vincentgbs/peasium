@@ -22,14 +22,15 @@ $app = $function[0] . 'Controller';
 try {
     require_once '../private/controllers/' . $app . '.php';
 } catch (Exception $e) {
-     exit;
+    exit;
 }
 
 $controller = new $app();
 if(count($function) == 1) {
     $controller->home();
 } else {
-    $controller->$function[1](isset($function[2])?$function[2]:null);
+    $callFunction = $function[1];
+    $controller->$callFunction();
 }
 
 $stop = microtime(true);
