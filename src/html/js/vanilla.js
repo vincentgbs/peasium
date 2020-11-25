@@ -1,33 +1,47 @@
-let vanilla = {
-    load: async function(div) {
-        vanilla.helloWorldExample(div);
+var vanilla = {
+    settings: {
+        flashMessageTimer: 2500,
     },
-    helloWorldExample: async function(div) {
-        let displayHello = await vanilla.curl('hello', 'GET', null);
-        div.innerHTML = `<div class="form">
-            <input type="text" id="getName"/>
-            <button id="helloWorld">Hello</button>
-            <div id="displayHello">` + displayHello + `</div>
-        </div>`;
-        document.querySelector('#helloWorld').onclick = async function() {
-            document.querySelector('#displayHello').innerHTML = await vanilla.curl('hello/hello', 'POST', {'name': document.querySelector('#getName').value});
-        }
+    render: async function() {
+        vanilla.body = document.createElement('div');
+        vanilla.body.setAttribute('id', 'body');
+        document.body.appendChild(vanilla.body);
+        let flashMessage = document.createElement('div');
+        flashMessage.setAttribute('id', 'flashMessage');
+        document.body.appendChild(flashMessage);
+        /* Hello World! example */
+        vanilla.loadjs('helloworld', true);
     },
-    xhr: new XMLHttpRequest(),
+    loadjs: function(src) {
+        let script = document.createElement('script');
+        script.onload = function () {
+            vanilla[src].onload();
+        };
+        script.src = 'js/' + src + '.js';
+        document.head.appendChild(script);
+    },
+    loadcss: function(href) {
+        var link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('type', 'text/css');
+        link.setAttribute('href', 'css/' + href + '.css');
+        document.head.appendChild(link);
+    },
     curl: function(url, method, body) {
         console.debug(url, method, body);
+        let xhr = new XMLHttpRequest();
         return new Promise(resolve => {
-            vanilla.xhr.open(method, '/router.php?app=' + url);
-            vanilla.xhr.onload = function () {
-                console.debug(vanilla.xhr.response);
-                resolve(vanilla.xhr.response);
+            xhr.open(method, '/router.php?app=' + url);
+            xhr.onload = function () {
+                console.debug(xhr.response);
+                resolve(xhr.response);
             };
-            vanilla.xhr.onerror = function() {
+            xhr.onerror = function() {
                 console.debug('Connection Error');
                 resolve(null);
             };
             try {
-                vanilla.xhr.send(
+                xhr.send(
                     JSON.stringify(body)
                 );
             } catch (err) {
@@ -36,9 +50,18 @@ let vanilla = {
             }
         });
     },
+    flashMessage: function(message) {
+        let div = document.querySelector("#flashMessage");
+        div.innerText = message;
+        div.style.display = 'block';
+        setTimeout(function() {
+            div.innerText = '';
+            div.style.display = 'none';
+        }, vanilla.settings.flashMessageTimer);
+    },
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     console.debug('vanilla.js loaded');
-    vanilla.load(document.querySelector('#app'));
+    vanilla.render();
 });
