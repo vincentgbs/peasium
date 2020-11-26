@@ -1,6 +1,7 @@
 <?php
 require_once '../private/config.php';
 
+session_start();
 $start = microtime(true);
 
 if(DEBUG == 'ON') {

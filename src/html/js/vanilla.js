@@ -9,11 +9,6 @@ var vanilla = {
         let flashMessage = document.createElement('div');
         flashMessage.setAttribute('id', 'flashMessage');
         document.body.appendChild(flashMessage);
-        /* Hello World! example */
-        // vanilla.loadjs('helloworld');
-        /* User Login example */
-        // vanilla.loadjs('user');
-        /* Peasium homepage */
         vanilla.loadjs('peasium');
     },
     loadjs: function(src) {

@@ -3,7 +3,6 @@
 class userController {
 
     public function __construct() {
-        session_start();
         $this->sqliteFile = '../private/sqlite3/users.db';
         try {
             $this->db = new SQLite3($this->sqliteFile, SQLITE3_OPEN_READWRITE);
