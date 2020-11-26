@@ -3,6 +3,9 @@ var vanilla = {
         flashMessageTimer: 2500,
     },
     render: async function() {
+        vanilla.navigation = document.createElement('div');
+        vanilla.navigation.setAttribute('id', 'navigation');
+        document.body.appendChild(vanilla.navigation);
         vanilla.body = document.createElement('div');
         vanilla.body.setAttribute('id', 'body');
         document.body.appendChild(vanilla.body);
