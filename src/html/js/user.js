@@ -23,5 +23,5 @@ vanilla.user = {
                     await vanilla.curl('user/logout', 'GET', null);
             }
         }
-    }
+    },
 }

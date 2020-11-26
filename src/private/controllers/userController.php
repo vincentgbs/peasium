@@ -21,7 +21,7 @@ class userController {
             if (!$this->db->exec($createUserTable)) {
                 exit('Error creating `users` table');
             }
-            $user = ['username'=>'testuser', 'password'=>'testpass'];
+            $user = ['username'=>'test', 'password'=>'test'];
             $this->createUser($user);
         }
     }

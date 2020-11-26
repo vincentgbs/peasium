@@ -12,7 +12,9 @@ var vanilla = {
         /* Hello World! example */
         // vanilla.loadjs('helloworld');
         /* User Login example */
-        vanilla.loadjs('user');
+        // vanilla.loadjs('user');
+        /* Peasium homepage */
+        vanilla.loadjs('peasium');
     },
     loadjs: function(src) {
         let script = document.createElement('script');
