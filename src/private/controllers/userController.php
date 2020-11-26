@@ -85,14 +85,18 @@ class userController extends controller {
         return true;
     }
 
+    private function setLogin($user) {
+        $_SESSION['username'] = $user['username'];
+    }
+
     public function login() {
         $post = json_decode(file_get_contents('php://input'), true);
         if ($post !== NULL) {
             $user = [
-                'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']),
-                'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password'])];
+                'username'=> $this->getJson('username', 'alphabetic'),
+                'password'=> $this->getJson('password', 'alphanumeric')];
             if ($this->checkUserPassword($user)) {
-                $_SESSION['username'] = $user['username'];
+                $this->setLogin($user);
                 echo 'Logged In';
             }
         }
