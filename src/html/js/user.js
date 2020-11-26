@@ -4,8 +4,9 @@ vanilla.user = {
         let status = await vanilla.curl('user', 'GET', null);
         vanilla.body.innerHTML = `<div class="form">
             <h3>Login</h3>
-            <input type="text" id="username" placeholder="username"/><br/>
-            <input type="password" id="password" placeholder="password"/><br/>
+            <input type="text" id="username" placeholder="username" onkeyup="vanilla.limitInput(this, 'alphabetic');"/><br/>
+            <input type="password" id="password" placeholder="password"
+            onkeyup="vanilla.limitInput(this, 'alphanumeric');"/><br/>
             <button id="login">Login</button><br/>
             <button id="logout">Logout</button>
             <div id="displayStatus">` + status + `</div>
@@ -29,9 +30,11 @@ vanilla.user = {
         let status = await vanilla.curl('user/home', 'GET', null);
         vanilla.body.innerHTML = `<div class="form">
         <h3>Register</h3>
-        <input type="text" id="username" placeholder="username"/><br/>
-        <input type="password" id="password" placeholder="password"/><br/>
-        <input type="password" id="confirm" placeholder="confirm"/><br/>
+        <input type="text" id="username" placeholder="username" onkeyup="vanilla.limitInput(this, 'alphabetic');"/><br/>
+        <input type="password" id="password" placeholder="password"
+        onkeyup="vanilla.limitInput(this, 'alphanumeric');"/><br/>
+        <input type="password" id="confirm" placeholder="confirm"
+        onkeyup="vanilla.limitInput(this, 'alphanumeric');"/><br/>
         <button id="register">Register</button>
         <div id="displayStatus"></div>
         </div>`;
