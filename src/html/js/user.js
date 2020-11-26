@@ -33,6 +33,7 @@ vanilla.user = {
         <input type="password" id="password" placeholder="password"/><br/>
         <input type="password" id="confirm" placeholder="confirm"/><br/>
         <button id="register">Register</button>
+        <div id="displayStatus"></div>
         </div>`;
         if (document.querySelector('#register')) {
             document.querySelector('#register').onclick = async function() {

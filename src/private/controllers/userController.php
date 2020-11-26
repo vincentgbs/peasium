@@ -71,13 +71,15 @@ class userController {
             echo 'Error creating user: ' . $user['username'] . '<br/>';
             exit($this->db->lastErrorMsg());
         }
+        return true;
     }
 
     public function login() {
         $post = json_decode(file_get_contents('php://input'), true);
         if ($post !== NULL) {
             $user = [
-                'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']), 'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password'])];
+                'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']),
+                'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password'])];
             $check = $this->checkUser($user);
             if ($check) {
                 $_SESSION['username'] = $user['username'];

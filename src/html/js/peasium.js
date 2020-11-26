@@ -63,6 +63,50 @@ vanilla.peasium = {
         RewriteRule ^([a-zA-Z]+)?$ /router.php?app=$1 [QSA,L,NC]
         </pre>
         <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
-        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>`;
+        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>
+        <pre>
+        $post = json_decode(file_get_contents('php://input'), true);
+        if ($post !== NULL) {
+            // register new user...
+        }
+        </pre>
+        <p>First retrieve the JSON variables from the POST request sent. With any user input, it is best to check first that it exists (null check) and also that the input is valid and not malicious. This code will create an variable called $post. $post is an associative array that contains the username, password, and confirm. The frontend javascript sends the data in this format:</p>
+        <pre>
+        vanilla.curl('user/register', 'POST',
+            {'username': document.querySelector('#username').value,
+            'password': document.querySelector('#password').value,
+            'confirm': document.querySelector('#confirm').value}
+        </pre>
+        <p>Once the data is in the $post variable. It must be cleaned before it can be processed. This ensures that users do not enter malicious or invalid content. For the purpose of this tutorial, a simple preg_replace will suffice, although typically a more in-depth approach would be required. In this example, the username is only allowed to have alphabetic characters and the password and its confirmation are only allowed alphanumeric characters.</p>
+        <pre>
+        $user = [
+            'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']),
+            'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password']),
+            'confirm'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['confirm'])
+        ];
+        </pre>
+        <p>Use the existing createUser() function in the userController, to create a new user and send an appropriate response to the frontend. The createUser() function will send a 'Error creating user' message to the frontend if there is an error inserting the user into the sqlite database. Php can first check to see if the username already exists and return a more detailed error response.</p>
+        <pre>
+        if ($this->createUser($user)) {
+            echo 'User Created';
+        }
+        </pre>
+        <p>The final result:</p>
+        <pre>
+        public function register() {
+            $post = json_decode(file_get_contents('php://input'), true);
+            if ($post !== NULL) {
+                $user = [
+                    'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']),
+                    'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password']),
+                    'confirm'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['confirm'])
+                ];
+                if ($this->createUser($user)) {
+                    echo 'User Created';
+                }
+            }
+        }
+        </pre>
+        `;
     },
 }
