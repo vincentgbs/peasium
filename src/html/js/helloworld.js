@@ -2,7 +2,7 @@ vanilla.helloworld = {
     onload: async function() {
         console.debug('helloworld.js loaded');
         let displayHello = await vanilla.curl('hello', 'GET', null);
-        vanilla.body.innerHTML = `<div class="form">
+        vanilla.body.innerHTML = vanilla.peasium.nav() + `<div class="form">
             <input type="text" id="getName" placeholder="name"/>
             <button id="helloWorld">Hello</button>
             <div id="displayHello">` + displayHello + `</div>

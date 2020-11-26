@@ -2,7 +2,7 @@ vanilla.user = {
     onload: async function() {
         console.debug('user.js loaded');
         let status = await vanilla.curl('user', 'GET', null);
-        vanilla.body.innerHTML = `<div class="form">
+        vanilla.body.innerHTML = vanilla.peasium.nav() + `<div class="form">
             <h3>Login</h3>
             <input type="text" id="username" placeholder="username" onkeyup="vanilla.limitInput(this, 'alphabetic');"/><br/>
             <input type="password" id="password" placeholder="password"
@@ -28,7 +28,7 @@ vanilla.user = {
     },
     register: async function() {
         let status = await vanilla.curl('user/home', 'GET', null);
-        vanilla.body.innerHTML = `<div class="form">
+        vanilla.body.innerHTML = vanilla.peasium.nav() + `<div class="form">
         <h3>Register</h3>
         <input type="text" id="username" placeholder="username" onkeyup="vanilla.limitInput(this, 'alphabetic');"/><br/>
         <input type="password" id="password" placeholder="password"

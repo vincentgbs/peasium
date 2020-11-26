@@ -2,13 +2,7 @@ vanilla.peasium = {
     onload: async function() {
         console.debug('peasium.js loaded');
         vanilla.body.innerHTML = `<div class="main">
-            <div class="nav">
-                <button class="navButton" id="home">Home</button>
-                <a href="https://github.com/vincentgbs/peasium"><button class="navButton">Github</button></a>
-                <button class="navButton" id="documentation">Documentation</button>
-                <button class="navButton" id="features">Features</button>
-                <button class="navButton" id="tutorials">Tutorials</button>
-            </div>
+            ` + vanilla.peasium.nav() + `
             <div id="peasiumMainBody"></div>
         </div>`;
         if (document.querySelector('#home')) {
@@ -24,6 +18,15 @@ vanilla.peasium = {
             document.querySelector('#tutorials').onclick = vanilla.peasium.loadTutorials
         }
         vanilla.peasium.loadHome();
+    },
+    nav: function() {
+        return `<div class="nav">
+            <button class="navButton" id="home">Home</button>
+            <a href="https://github.com/vincentgbs/peasium"><button class="navButton">Github</button></a>
+            <button class="navButton" id="documentation">Documentation</button>
+            <button class="navButton" id="features">Features</button>
+            <button class="navButton" id="tutorials">Tutorials</button>
+        </div>`;
     },
     loadHome: function() {
         document.querySelector('#peasiumMainBody').innerHTML = `<h3>Peasium</h3>

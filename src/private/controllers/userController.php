@@ -1,8 +1,10 @@
 <?php
+require_once 'controller.php';
 
-class userController {
+class userController extends controller {
 
     public function __construct() {
+        parent::__construct();
         $this->sqliteFile = '../private/sqlite3/users.db';
         try {
             $this->db = new SQLite3($this->sqliteFile, SQLITE3_OPEN_READWRITE);
