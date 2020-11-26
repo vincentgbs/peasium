@@ -5,13 +5,6 @@ class userController extends controller {
 
     public function __construct() {
         parent::__construct();
-        $this->sqliteFile = '../private/sqlite3/users.db';
-        try {
-            $this->db = new SQLite3($this->sqliteFile, SQLITE3_OPEN_READWRITE);
-        } catch (Exception $e) {
-            $this->db = new SQLite3($this->sqliteFile, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
-            chmod($this->sqliteFile, 0777);
-        }
         $checkUserTableExists = "SELECT COUNT(`name`) FROM `sqlite_master`
             WHERE `type`='table' AND `name`='users';";
         if ($this->db->querySingle($checkUserTableExists) == 0) {
@@ -23,7 +16,9 @@ class userController extends controller {
                 exit('Error creating `users` table');
             }
             $user = ['username'=>'test', 'password'=>'test'];
-            $this->createUser($user);
+            if (!$this->checkUsernameExists($user)) {
+                $this->createUser($user);
+            }
         }
     }
 
@@ -40,7 +35,7 @@ class userController extends controller {
         return $hash;
     }
 
-    private function checkUser($user) {
+    private function checkUserPassword($user) {
         $stmt = $this->db->prepare("SELECT `hash`, `salt`, `count`
             FROM `users` WHERE `username`=:username;");
         $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
@@ -53,6 +48,20 @@ class userController extends controller {
                 if($check['hash'] == $this->hashPassword($user)) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private function checkUsernameExists($user) {
+        $stmt = $this->db->prepare("SELECT `username`
+            FROM `users` WHERE `username`=:username;");
+        $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
+        $check = $stmt->execute();
+        if($check) {
+            $check = $check->fetchArray();
+            if ($check !== false) {
+                return true;
             }
         }
         return false;
@@ -82,8 +91,7 @@ class userController extends controller {
             $user = [
                 'username'=>preg_replace("/[^a-zA-Z]+/", "", $post['username']),
                 'password'=>preg_replace("/[^a-zA-Z0-9]+/", "", $post['password'])];
-            $check = $this->checkUser($user);
-            if ($check) {
+            if ($this->checkUserPassword($user)) {
                 $_SESSION['username'] = $user['username'];
                 echo 'Logged In';
             }
@@ -91,7 +99,7 @@ class userController extends controller {
     }
 
     public function logout() {
-        unset($_SESSION['username']);
+        session_unset();
         session_destroy();
         echo 'Logged Out';
     }

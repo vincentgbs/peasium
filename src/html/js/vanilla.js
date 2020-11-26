@@ -63,6 +63,8 @@ var vanilla = {
             element.value = element.value.replace(/[^a-zA-Z]/g, '');
         } else if (limit == 'alphanumeric') {
             element.value = element.value.replace(/[^a-zA-Z0-9]/g, '');
+        } else {
+            element.value = element.value.replace(limit, '');
         }
     },
 }

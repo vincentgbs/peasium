@@ -10,7 +10,7 @@ class helloController extends controller {
             if ($this->json == NULL || $this->json['name'] == NULL) {
                 echo 'Hello _____!';
             } else {
-                echo 'Hello ' . $this->getJson('name', 'alphanumeric') . '!';
+                echo 'Hello ' . $this->getJson('name', 'alphabetic') . '!';
             }
         }
     }
