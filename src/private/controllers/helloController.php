@@ -7,7 +7,7 @@ class helloController extends controller {
         if ($this->method == 'GET') {
             echo 'Hello World!';
         } else if ($this->method == 'POST') {
-            if ($this->json == NULL || $this->json['name'] == NULL) {
+            if (($this->json == NULL) || ($this->json['name'] === NULL)) {
                 echo 'Hello _____!';
             } else {
                 echo 'Hello ' . $this->getJson('name', 'alphabetic') . '!';

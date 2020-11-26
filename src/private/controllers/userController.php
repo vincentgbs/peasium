@@ -5,6 +5,10 @@ class userController extends controller {
 
     public function __construct() {
         parent::__construct();
+        $this->userTableMigration();
+    }
+
+    private function userTableMigration() {
         $checkUserTableExists = "SELECT COUNT(`name`) FROM `sqlite_master`
             WHERE `type`='table' AND `name`='users';";
         if ($this->db->querySingle($checkUserTableExists) == 0) {
@@ -15,8 +19,8 @@ class userController extends controller {
             if (!$this->db->exec($createUserTable)) {
                 exit('Error creating `users` table');
             }
-            $user = ['username'=>'test', 'password'=>'test'];
-            if (!$this->checkUsernameExists($user)) {
+            $user = ['username'=>'', 'password'=>''];
+            if (!$this->checkUserExists($user)) {
                 $this->createUser($user);
             }
         }
@@ -53,7 +57,7 @@ class userController extends controller {
         return false;
     }
 
-    private function checkUsernameExists($user) {
+    private function checkUserExists($user) {
         $stmt = $this->db->prepare("SELECT `username`
             FROM `users` WHERE `username`=:username;");
         $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
@@ -98,6 +102,8 @@ class userController extends controller {
             if ($this->checkUserPassword($user)) {
                 $this->setLogin($user);
                 echo 'Logged In';
+            } else {
+                echo 'Invalid Login';
             }
         }
     }
@@ -116,9 +122,30 @@ class userController extends controller {
         }
     }
 
-    // public function register() {
-    //     // create a function that will register a new user
-    // }
+    public function register() {
+        if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
+            $user = [
+                'username'=> $this->getJson('username', 'alphabetic'),
+                'password'=> $this->getJson('password', 'alphanumeric'),
+                'confirm'=> $this->getJson('password', 'confirm')
+            ];
+            if ($this->checkUserExists($user)) {
+                exit('That user already exists');
+            }
+            if (strlen($user['username']) < USERNAMEMINLEN) {
+                exit('That username is too short');
+            }
+            if ($user['password'] != $user['confirm']) {
+                exit('Password and confirmation do not match');
+            }
+            if (strlen($user['password']) < USERPASSMINLEN) {
+                exit('That password is too short');
+            }
+            if ($this->createUser($user)) {
+                echo 'User Created';
+            }
+        }
+    }
 
 }
 
