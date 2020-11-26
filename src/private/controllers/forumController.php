@@ -58,6 +58,9 @@ class forumController extends controller {
             $post['author'] = substr($post['author'], 0, FORUMAUTHORMAX);
             $post['title'] = substr($post['title'], 0, FORUMTITLEMAX);
             $post['post'] = substr($post['post'], 0, FORUMPOSTMAX);
+            if ($this->createPost($post)) {
+                echo 'Post created';
+            }
         }
     }
 
@@ -70,7 +73,8 @@ class forumController extends controller {
                 'author'=>$row['author'],
                 'title'=>$row['title'],
                 'post'=>$row['post'],
-                'verified'=>$row['verified']
+                'verified'=>$row['verified'],
+                'timestamp'=>$row['timestamp']
             ];
         }
         echo json_encode($posts);

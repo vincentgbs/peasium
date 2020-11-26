@@ -128,7 +128,7 @@ class userController extends controller {
                     exit('That password is too long');
                 }
                 if ($this->createUser($user)) {
-                    echo 'User Created';
+                    echo 'User created';
                 }
             }
         }

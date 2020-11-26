@@ -36,3 +36,24 @@ pre {
     display: block;
     padding: 12px;
 }
+
+.table {
+    display: table;
+    border: 1px solid #999999;
+    width: 100%;
+}
+.tr {
+    display: table-row;
+    width: 100%;
+}
+.verified {
+    background-color: #008CBA;
+}
+.td {
+    display: table-cell;
+    border: 1px solid #AAAAAA;
+}
+.forumPost {
+    color: blue;
+    text-decoration: underline;
+}
