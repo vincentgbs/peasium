@@ -19,7 +19,7 @@ class forumController extends controller {
             if (!$this->db->exec($createUserTable)) {
                 exit('Error creating `posts` table');
             }
-            $post = ['author'=>'root', 'title'=>'example', 'post'=>'example post'];
+            $post = ['author'=>'exampleauthor', 'title'=>'example title', 'post'=>'example post message'];
             $this->createPost($post);
         }
     }
@@ -60,6 +60,13 @@ class forumController extends controller {
             $post['post'] = substr($post['post'], 0, FORUMPOSTMAX);
             if ($this->createPost($post)) {
                 echo 'Post created';
+            }
+        } else if ($this->method == 'DELETE') {
+            $check = $this->db->query("DELETE FROM `posts`;");
+            if ($check) {
+                echo 'Posts deleted';
+            } else {
+                exit('Error deleting posts');
             }
         }
     }
