@@ -36,7 +36,7 @@ var vanilla = {
                 resolve(xhr.response);
             };
             xhr.onerror = function() {
-                console.debug('Connection Error');
+                vanilla.flashMessage('Connection Error');
                 resolve(null);
             };
             try {

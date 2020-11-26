@@ -29,3 +29,10 @@
 p {
     padding: 15px 32px;
 }
+
+pre {
+    background-color: #EEEEEE;
+    border: 1px solid #999999;
+    display: block;
+    padding: 12px;
+}

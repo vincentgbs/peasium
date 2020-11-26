@@ -6,7 +6,7 @@ vanilla.peasium = {
                 <button class="navButton" id="home">Home</button>
                 <a href="https://github.com/vincentgbs/peasium"><button class="navButton">Github</button></a>
                 <button class="navButton" id="documentation">Documentation</button>
-                <button class="navButton" id="features">Features</button>
+                <button class="navButton" id="tutorials">Tutorials</button>
             </div>
             <div id="peasiumMainBody"></div>
         </div>`;
@@ -20,9 +20,9 @@ vanilla.peasium = {
                 vanilla.peasium.loadDocumentation();
             }
         }
-        if (document.querySelector('#features')) {
-            document.querySelector('#features').onclick = async function() {
-                vanilla.peasium.loadFeatures();
+        if (document.querySelector('#tutorials')) {
+            document.querySelector('#tutorials').onclick = async function() {
+                vanilla.peasium.loadTutorials();
             }
         }
         vanilla.peasium.loadHome();
@@ -53,7 +53,16 @@ vanilla.peasium = {
             }
         }
     },
-    loadFeatures: function() {
-        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Features</h3>`;
+    loadTutorials: function() {
+        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Tutorials</h3>
+        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
+        <br/>An example of apache's rerouting to create prettier urls:</p>
+        <pre>
+        RewriteEngine On
+        RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]
+        RewriteRule ^([a-zA-Z]+)?$ /router.php?app=$1 [QSA,L,NC]
+        </pre>
+        <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
+        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>`;
     },
 }
