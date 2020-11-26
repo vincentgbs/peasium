@@ -115,11 +115,17 @@ class userController extends controller {
                 if (strlen($user['username']) < USERNAMEMINLEN) {
                     exit('That username is too short');
                 }
+                if (strlen($user['username']) > USERNAMEMAXLEN) {
+                    exit('That username is too long');
+                }
                 if ($user['password'] != $user['confirm']) {
                     exit('Password and confirmation do not match');
                 }
                 if (strlen($user['password']) < USERPASSMINLEN) {
                     exit('That password is too short');
+                }
+                if (strlen($user['password']) > USERPASSMAXLEN) {
+                    exit('That password is too long');
                 }
                 if ($this->createUser($user)) {
                     echo 'User Created';
