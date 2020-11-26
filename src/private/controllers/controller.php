@@ -2,7 +2,7 @@
 
 abstract class controller {
 
-    public function __construct() {
+    protected function __construct() {
         $this->headers = getallheaders();
         $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
         if ($this->headers['Content-Type'] == 'application/json') {
@@ -17,7 +17,7 @@ abstract class controller {
         }
     }
 
-    public function getJson($key, $filter) {
+    protected function getJson($key, $filter) {
         switch ($filter) {
             case 'numeric':
                 return preg_replace("/[^0-9]+/", "", $this->json[$key]);
@@ -30,6 +30,14 @@ abstract class controller {
                 break;
             default:
                 return preg_replace($filter, "", $this->json[$key]);
+        }
+    }
+
+    protected function isUserLoggedIn() {
+        if (isset($_SESSION['username']) && $_SESSION['username']) {
+            return true;
+        } else {
+            return false;
         }
     }
 

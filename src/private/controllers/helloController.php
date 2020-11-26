@@ -1,16 +1,21 @@
 <?php
 require_once 'controller.php';
 
-class helloController extends controller {
+class helloController {
+
+    public function __construct() {
+        $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
+        $this->json = json_decode(file_get_contents('php://input'), true);
+    }
 
     public function home() {
         if ($this->method == 'GET') {
             echo 'Hello World!';
         } else if ($this->method == 'POST') {
             if (($this->json == NULL) || ($this->json['name'] === NULL)) {
-                echo 'Hello _____!';
+                exit('Invalid POST request');
             } else {
-                echo 'Hello ' . $this->getJson('name', 'alphabetic') . '!';
+                echo 'Hello ' . preg_replace("/[^a-zA-Z]+/", "", $this->json['name']) . '!';
             }
         }
     }

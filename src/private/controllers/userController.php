@@ -19,7 +19,7 @@ class userController extends controller {
             if (!$this->db->exec($createUserTable)) {
                 exit('Error creating `users` table');
             }
-            $user = ['username'=>'test', 'password'=>'test'];
+            $user = ['username'=>'root', 'password'=>'root'];
             if (!$this->checkUserExists($user)) {
                 $this->createUser($user);
             }
@@ -94,7 +94,7 @@ class userController extends controller {
     }
 
     public function home() {
-        if ($_SESSION['username']) {
+        if ($this->isUserLoggedIn()) {
             echo 'Logged In';
         } else {
             echo 'Logged Out';
@@ -127,6 +127,10 @@ class userController extends controller {
             }
         }
     }
+
+    // public function changePassword() {
+    //     /* implement a function that can change a users password */
+    // }
 
     public function login() {
         if ($this->method == 'POST') {
