@@ -128,10 +128,6 @@ class userController extends controller {
         }
     }
 
-    // public function changePassword() {
-    //     /* implement a function that can change a users password */
-    // }
-
     public function login() {
         if ($this->method == 'POST') {
             if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
@@ -153,6 +149,10 @@ class userController extends controller {
         session_destroy();
         exit('Logged Out');
     }
+
+    // public function changePassword() {
+    //     /* implement a function that can change a users password */
+    // }
 
 }
 
