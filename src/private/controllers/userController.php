@@ -19,7 +19,7 @@ class userController extends controller {
             if (!$this->db->exec($createUserTable)) {
                 exit('Error creating `users` table');
             }
-            $user = ['username'=>'', 'password'=>''];
+            $user = ['username'=>'test', 'password'=>'test'];
             if (!$this->checkUserExists($user)) {
                 $this->createUser($user);
             }
@@ -93,28 +93,6 @@ class userController extends controller {
         $_SESSION['username'] = $user['username'];
     }
 
-    public function login() {
-        if ($this->method == 'POST') {
-            if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
-                $user = [
-                    'username'=>$this->getJson('username', 'alphabetic'),
-                    'password'=>$this->getJson('password', 'alphanumeric')];
-                if ($this->checkUserPassword($user)) {
-                    $this->setLogin($user);
-                    echo 'Logged In';
-                } else {
-                    exit('Invalid Login');
-                }
-            }
-        }
-    }
-
-    public function logout() {
-        session_unset();
-        session_destroy();
-        exit('Logged Out');
-    }
-
     public function home() {
         if ($_SESSION['username']) {
             echo 'Logged In';
@@ -148,6 +126,28 @@ class userController extends controller {
                 }
             }
         }
+    }
+
+    public function login() {
+        if ($this->method == 'POST') {
+            if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
+                $user = [
+                    'username'=>$this->getJson('username', 'alphabetic'),
+                    'password'=>$this->getJson('password', 'alphanumeric')];
+                if ($this->checkUserPassword($user)) {
+                    $this->setLogin($user);
+                    echo 'Logged In';
+                } else {
+                    exit('Invalid Login');
+                }
+            }
+        }
+    }
+
+    public function logout() {
+        session_unset();
+        session_destroy();
+        exit('Logged Out');
     }
 
 }
