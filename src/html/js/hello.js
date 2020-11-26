@@ -1,8 +1,8 @@
-vanilla.helloworld = {
+vanilla.hello = {
     onload: async function() {
-        console.debug('helloworld.js loaded');
+        console.debug('hello.js loaded');
         let displayHello = await vanilla.curl('hello', 'GET', null);
-        vanilla.body.innerHTML = vanilla.peasium.nav() + `<div class="form">
+        vanilla.body.innerHTML = `<div class="form">
             <input type="text" id="getName" placeholder="name"/>
             <button id="helloWorld">Hello</button>
             <div id="displayHello">` + displayHello + `</div>

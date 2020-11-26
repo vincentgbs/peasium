@@ -44,7 +44,7 @@ vanilla.peasium = {
         <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'test' has the password 'test' and will display the status of the user. There is also a frontend form without a backend implementation for <button id="userRegister">Registering</button> new users.</p>`;
         if (document.querySelector('#helloWorld')) {
             document.querySelector('#helloWorld').onclick = async function() {
-                vanilla.loadjs('helloworld', 'onload');
+                vanilla.loadjs('hello', 'onload');
             }
         }
         if (document.querySelector('#userLogin')) {
