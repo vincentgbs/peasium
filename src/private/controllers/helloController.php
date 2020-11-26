@@ -1,17 +1,17 @@
 <?php
+require_once 'controller.php';
 
-class helloController {
+class helloController extends controller {
 
     public function home() {
-        echo 'Hello World!';
-    }
-
-    public function hello() {
-        $post = json_decode(file_get_contents('php://input'), true);
-        if ($post !== NULL) {
-            echo 'Hello ' . preg_replace("/[^a-zA-Z]+/", "", $post['name']) . '!';
-        } else {
-            echo 'Hello _____!';
+        if ($this->method == 'GET') {
+            echo 'Hello World!';
+        } else if ($this->method == 'POST') {
+            if ($this->json == NULL || $this->json['name'] == NULL) {
+                echo 'Hello _____!';
+            } else {
+                echo 'Hello ' . $this->getJson('name', 'alphanumeric') . '!';
+            }
         }
     }
 

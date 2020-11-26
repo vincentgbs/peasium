@@ -11,9 +11,30 @@ var vanilla = {
         document.body.appendChild(flashMessage);
         vanilla.loadjs('peasium', 'onload');
     },
+    curl: function(url, method, body) {
+        console.debug(url, method, body);
+        let xhr = new XMLHttpRequest();
+        return new Promise(resolve => {
+            xhr.open(method, '/router.php?app=' + url);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function () {
+                console.debug(xhr.response);
+                resolve(xhr.response);
+            };
+            xhr.onerror = function() {
+                vanilla.flashMessage('Connection Error');
+                resolve(null);
+            };
+            try {
+                xhr.send(JSON.stringify(body));
+            } catch (err) {
+                console.debug(err);
+            }
+        });
+    },
     loadjs: function(src, onload) {
         let script = document.createElement('script');
-        script.onload = function () {
+        script.onload = function(){
             vanilla[src][onload]();
         };
         script.src = 'js/' + src + '.js';
@@ -25,29 +46,6 @@ var vanilla = {
         link.setAttribute('type', 'text/css');
         link.setAttribute('href', 'css/' + href + '.css');
         document.head.appendChild(link);
-    },
-    curl: function(url, method, body) {
-        console.debug(url, method, body);
-        let xhr = new XMLHttpRequest();
-        return new Promise(resolve => {
-            xhr.open(method, '/router.php?app=' + url);
-            xhr.onload = function () {
-                console.debug(xhr.response);
-                resolve(xhr.response);
-            };
-            xhr.onerror = function() {
-                vanilla.flashMessage('Connection Error');
-                resolve(null);
-            };
-            try {
-                xhr.send(
-                    JSON.stringify(body)
-                );
-            } catch (err) {
-                console.debug(err);
-                console.debug(request);
-            }
-        });
     },
     flashMessage: function(message) {
         let div = document.querySelector("#flashMessage");

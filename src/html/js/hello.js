@@ -9,7 +9,7 @@ vanilla.hello = {
         </div>`;
         if (document.querySelector('#helloWorld')) {
             document.querySelector('#helloWorld').onclick = async function() {
-                document.querySelector('#displayHello').innerHTML = await vanilla.curl('hello/hello', 'POST', {'name': document.querySelector('#getName').value});
+                document.querySelector('#displayHello').innerHTML = await vanilla.curl('hello/home', 'POST', {'name': document.querySelector('#getName').value});
             }
         }
     },
