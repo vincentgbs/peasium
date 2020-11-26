@@ -6,24 +6,22 @@ vanilla.peasium = {
                 <button class="navButton" id="home">Home</button>
                 <a href="https://github.com/vincentgbs/peasium"><button class="navButton">Github</button></a>
                 <button class="navButton" id="documentation">Documentation</button>
+                <button class="navButton" id="features">Features</button>
                 <button class="navButton" id="tutorials">Tutorials</button>
             </div>
             <div id="peasiumMainBody"></div>
         </div>`;
         if (document.querySelector('#home')) {
-            document.querySelector('#home').onclick = function() {
-                vanilla.peasium.loadHome();
-            }
+            document.querySelector('#home').onclick = vanilla.peasium.loadHome;
         }
         if (document.querySelector('#documentation')) {
-            document.querySelector('#documentation').onclick = async function() {
-                vanilla.peasium.loadDocumentation();
-            }
+            document.querySelector('#documentation').onclick = vanilla.peasium.loadDocumentation;
+        }
+        if (document.querySelector('#features')) {
+            document.querySelector('#features').onclick = vanilla.peasium.loadFeatures;
         }
         if (document.querySelector('#tutorials')) {
-            document.querySelector('#tutorials').onclick = async function() {
-                vanilla.peasium.loadTutorials();
-            }
+            document.querySelector('#tutorials').onclick = vanilla.peasium.loadTutorials
         }
         vanilla.peasium.loadHome();
     },
@@ -35,6 +33,10 @@ vanilla.peasium = {
     },
     loadDocumentation: function() {
         document.querySelector('#peasiumMainBody').innerHTML = `<h3>Documentation</h3>
+        <p>Starting from the setup: Peasium is built on VirtualBox and Vagrant. VirtualBox is a virtualizer. That means that VirtualBox creates a virtual machine on your computer. With VirtualBox, you are able to test and tinker with many different settings without worrying about messing up any settings on your computer. Vagrant is a helper for VirtualBox that makes setting up and tearing down VMs easier.</p>`;
+    },
+    loadFeatures: function() {
+        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Features</h3>
         <p>The easiest way to get started on Peasium is to look through the example controllers provided. Starting with the <button id="helloWorld">Hello World</button> example. The default message 'Hello World!' can be changed to greet a user by name through a POST request. The POST request will strip any non-alphanumeric characters from the name in its response.</p>
         <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'test' has the password 'test' and will display the status of the user. There is also a frontend form without a backend implementation for <button id="userRegister">Registering</button> new users.</p>`;
         if (document.querySelector('#helloWorld')) {
