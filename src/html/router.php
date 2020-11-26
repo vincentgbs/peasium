@@ -1,20 +1,24 @@
 <?php
-require_once '../private/config.php';
+if (is_file('../private/config.php')) {
+    include_once('../private/config.php');
+} else {
+    exit('Missing configuration file.');
+}
 
 session_start();
 $start = microtime(true);
 
 if(DEBUG == 'ON') {
     echo "<pre>";
+    error_reporting(E_ALL);
 } else {
-    error_reporting(0);
+    error_reporting(E_ERROR);
 }
 
-if (isset($_GET['app'])) {
-    $function = explode("/", $_GET['app']);
-    foreach($function as &$word) {
-        $word = preg_replace('/[^A-z]/', '', $word);
-    }
+if (isset($_GET['app']) && $_GET['app'] !== '') {
+    $function = filter_input(INPUT_GET, 'app', FILTER_SANITIZE_STRING);
+    $function = strtolower(preg_replace("/[^a-zA-Z\/]/", '', $function));
+    $function = explode('/', $function);
 } else {
     $function = [DEFAULTAPP];
 }
