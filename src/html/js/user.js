@@ -1,5 +1,5 @@
 vanilla.user = {
-    onload: async function() {
+    login: async function() {
         console.debug('user.js loaded');
         let status = await vanilla.curl('user', 'GET', null);
         vanilla.body.innerHTML = `<div class="form">
@@ -7,8 +7,7 @@ vanilla.user = {
             <input type="text" id="username" placeholder="username" onkeyup="vanilla.limitInput(this, 'alphabetic');"/><br/>
             <input type="password" id="password" placeholder="password"
             onkeyup="vanilla.limitInput(this, 'alphanumeric');"/><br/>
-            <button id="login">Login</button><br/>
-            <button id="logout">Logout</button>
+            <button id="login">Login</button> <button id="logout">Logout</button><br/>
             <div id="displayStatus">` + status + `</div>
         </div>`;
         if (document.querySelector('#login')) {

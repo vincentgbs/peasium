@@ -94,7 +94,7 @@ vanilla.peasium = {
         }
         if (document.querySelector('#userLogin')) {
             document.querySelector('#userLogin').onclick = async function() {
-                vanilla.loadjs('user', 'onload');
+                vanilla.loadjs('user', 'login');
             }
         }
         if (document.querySelector('#userRegister')) {
