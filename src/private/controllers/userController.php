@@ -100,6 +100,10 @@ class userController {
         }
     }
 
+    // public function register() {
+    //     // create a function that will register a new user
+    // }
+
 }
 
 ?>

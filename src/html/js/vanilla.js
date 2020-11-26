@@ -9,12 +9,12 @@ var vanilla = {
         let flashMessage = document.createElement('div');
         flashMessage.setAttribute('id', 'flashMessage');
         document.body.appendChild(flashMessage);
-        vanilla.loadjs('peasium');
+        vanilla.loadjs('peasium', 'onload');
     },
-    loadjs: function(src) {
+    loadjs: function(src, onload) {
         let script = document.createElement('script');
         script.onload = function () {
-            vanilla[src].onload();
+            vanilla[src][onload]();
         };
         script.src = 'js/' + src + '.js';
         document.head.appendChild(script);
