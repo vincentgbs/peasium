@@ -2,7 +2,7 @@
 if (is_file('../private/config.php')) {
     include_once('../private/config.php');
 } else {
-    exit('Missing configuration file.');
+    exit('Missing configuration file');
 }
 
 session_start();
@@ -24,10 +24,10 @@ if (isset($_GET['app']) && $_GET['app'] !== '') {
 }
 
 $app = $function[0] . 'Controller';
-try {
-    require_once '../private/controllers/' . $app . '.php';
-} catch (Exception $e) {
-    exit;
+if (is_file('../private/controllers/' . $app . '.php')) {
+    include_once('../private/controllers/' . $app . '.php');
+} else {
+    exit('404 Error: Missing controller');
 }
 
 $controller = new $app();
