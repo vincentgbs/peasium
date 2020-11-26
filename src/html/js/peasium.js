@@ -36,46 +36,7 @@ vanilla.peasium = {
     },
     loadDocumentation: function() {
         document.querySelector('#peasiumMainBody').innerHTML = `<h3>Documentation</h3>
-        <p>Starting from the setup: Peasium is built on VirtualBox and Vagrant. VirtualBox is a virtualizer. That means that VirtualBox creates a virtual machine on your computer. With VirtualBox, you are able to test and tinker with many different settings without worrying about messing up any settings on your computer. Vagrant is a helper for VirtualBox that makes setting up and tearing down VMs easier.</p>`;
-    },
-    loadFeatures: function() {
-        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Features</h3>
-        <p>The easiest way to get started on Peasium is to look through the example controllers provided. Starting with the <button id="helloWorld">Hello World</button> example. The default message 'Hello World!' can be changed to greet a user by name through a POST request. The POST request will strip any non-alphanumeric characters from the name in its response.</p>
-        <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'test' has the password 'test' and will display the status of the user. There is also a frontend form without a backend implementation for <button id="userRegister">Registering</button> new users.</p>`;
-        if (document.querySelector('#helloWorld')) {
-            document.querySelector('#helloWorld').onclick = async function() {
-                vanilla.loadjs('hello', 'onload');
-            }
-        }
-        if (document.querySelector('#userLogin')) {
-            document.querySelector('#userLogin').onclick = async function() {
-                vanilla.loadjs('user', 'onload');
-            }
-        }
-        if (document.querySelector('#userRegister')) {
-            document.querySelector('#userRegister').onclick = async function() {
-                vanilla.loadjs('user', 'register');
-            }
-        }
-    },
-    loadTutorials: function() {
-        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Tutorials</h3>
-        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
-        <br/>An example of apache's rerouting to create prettier urls:</p>
-        <pre>
-        RewriteEngine On
-        RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]
-        RewriteRule ^([a-zA-Z]+)?$ /router.php?app=$1 [QSA,L,NC]
-        </pre>
-        <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
-        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>
-        <p>The hello world example uses this routing to reach the home() and hello() functions within the helloController. Hello World! is a simple check that the code is compiling properly on the backend. The frontend javascript sends a simple GET request to 'hello' (/router.php?app=hello) and displays the response. A GET request will   display an output similar to the output seen when typing the url into a browser.</p>
-        <pre>
-        let displayHello = await vanilla.curl('hello', 'GET', null);
-        ...
-        &lt;div id="displayHello"&gt; + displayHello + &lt;/div&gt;
-        </pre>
-        <p>The router defaults to the home() function when a second parameter is not present. In the helloController, the home function simply: echoes 'Hello World!' If the backend were not functioning correctly, the router might not properly call helloController->home().</p>
+        <p>Starting from the setup: Peasium is built on VirtualBox and Vagrant. VirtualBox is a virtualizer. That means that VirtualBox creates a virtual machine on your computer. With VirtualBox, you are able to test and tinker with many different settings without worrying about messing up any settings on your computer. Vagrant is a helper for VirtualBox that makes setting up and tearing down VMs easier.</p>
         <p>First retrieve the JSON variables from the POST request sent. With any user input, it is best to check first that it exists (null check) and also that the input is valid and not malicious. This code will create an variable called $post. $post is an associative array that contains the username, password, and confirm. </p>
         <pre>
         $post = json_decode(file_get_contents('php://input'), true);
@@ -120,6 +81,46 @@ vanilla.peasium = {
             }
         }
         </pre>
+        `;
+    },
+    loadFeatures: function() {
+        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Features</h3>
+        <p>The easiest way to get started on Peasium is to look through the example controllers provided. Starting with the <button id="helloWorld">Hello World</button> example. The default message 'Hello World!' can be changed to greet a user by name through a POST request. The POST request will strip any non-alphanumeric characters from the name in its response.</p>
+        <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'test' has the password 'test' and will display the status of the user. There is also a frontend form without a backend implementation for <button id="userRegister">Registering</button> new users.</p>`;
+        if (document.querySelector('#helloWorld')) {
+            document.querySelector('#helloWorld').onclick = async function() {
+                vanilla.loadjs('hello', 'onload');
+            }
+        }
+        if (document.querySelector('#userLogin')) {
+            document.querySelector('#userLogin').onclick = async function() {
+                vanilla.loadjs('user', 'onload');
+            }
+        }
+        if (document.querySelector('#userRegister')) {
+            document.querySelector('#userRegister').onclick = async function() {
+                vanilla.loadjs('user', 'register');
+            }
+        }
+    },
+    loadTutorials: function() {
+        document.querySelector('#peasiumMainBody').innerHTML = `<h3>Tutorials</h3>
+        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
+        <br/>An example of apache's rerouting to create prettier urls:</p>
+        <pre>
+        RewriteEngine On
+        RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]
+        RewriteRule ^([a-zA-Z]+)?$ /router.php?app=$1 [QSA,L,NC]
+        </pre>
+        <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
+        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>
+        <p>The hello world example uses this routing to reach the home() and hello() functions within the helloController. Hello World! is a simple check that the code is compiling properly on the backend. The frontend javascript sends a simple GET request to 'hello' (/router.php?app=hello) and displays the response. A GET request will   display an output similar to the output seen when typing the url into a browser.</p>
+        <pre>
+        let displayHello = await vanilla.curl('hello', 'GET', null);
+        ...
+        &lt;div id="displayHello"&gt; + displayHello + &lt;/div&gt;
+        </pre>
+        <p>The router defaults to the home() function when a second parameter is not present. In the helloController, the home function simply: echoes 'Hello World!' If the backend were not functioning correctly, the router might not properly call helloController->home().</p>
         `;
     },
 }
