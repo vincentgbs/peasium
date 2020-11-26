@@ -64,13 +64,21 @@ vanilla.peasium = {
         </pre>
         <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
         <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>
+        <p>The hello world example uses this routing to reach the home() and hello() functions within the helloController. Hello World! is a simple check that the code is compiling properly on the backend. The frontend javascript sends a simple GET request to 'hello' (/router.php?app=hello) and displays the response. A GET request will   display an output similar to the output seen when typing the url into a browser.</p>
+        <pre>
+        let displayHello = await vanilla.curl('hello', 'GET', null);
+        ...
+        &lt;div id="displayHello"&gt; + displayHello + &lt;/div&gt;
+        </pre>
+        <p>The router defaults to the home() function when a second parameter is not present. In the helloController, the home function simply: echoes 'Hello World!' If the backend were not functioning correctly, the router might not properly call helloController->home().</p>
+        <p>First retrieve the JSON variables from the POST request sent. With any user input, it is best to check first that it exists (null check) and also that the input is valid and not malicious. This code will create an variable called $post. $post is an associative array that contains the username, password, and confirm. </p>
         <pre>
         $post = json_decode(file_get_contents('php://input'), true);
         if ($post !== NULL) {
             // register new user...
         }
         </pre>
-        <p>First retrieve the JSON variables from the POST request sent. With any user input, it is best to check first that it exists (null check) and also that the input is valid and not malicious. This code will create an variable called $post. $post is an associative array that contains the username, password, and confirm. The frontend javascript sends the data in this format:</p>
+        <p>The frontend javascript sends the data in this format:</p>
         <pre>
         vanilla.curl('user/register', 'POST',
             {'username': document.querySelector('#username').value,

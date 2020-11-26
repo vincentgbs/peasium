@@ -59,12 +59,12 @@ var vanilla = {
         }, vanilla.settings.flashMessageTimer);
     },
     limitInput: function(element, limit) {
-        if (limit == 'alphabetic') {
+        if (limit == 'numeric') {
+            element.value = element.value.replace(/\D/g, '');
+        } else if (limit == 'alphabetic') {
             element.value = element.value.replace(/[^a-zA-Z]/g, '');
         } else if (limit == 'alphanumeric') {
             element.value = element.value.replace(/[^a-zA-Z0-9]/g, '');
-        } else if (limit == 'numeric') {
-            element.value = element.value.replace(/\D/g, '');
         }
     },
 }
