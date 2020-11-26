@@ -40,6 +40,7 @@ vanilla.peasium = {
         vanilla.body.innerHTML = `<h3>Features</h3>
         <p>The easiest way to get started on Peasium is to look through the example controllers provided. Starting with the <button id="helloWorld">Hello World</button> example. The default message 'Hello World!' can be changed to greet a user by name through a POST request. The POST request will strip any non-alphanumeric characters from the name in its response.</p>
         <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'test' has the password 'test' and will display the status of the user. The <button id="userRegister">Register</button> example allows new users to create a login. There is also a frontend form without a backend implementation for <button id="userChange">Change Password</button> where you can practice your own backend development.</p>
+        <p>There is also a sample <button id="viewForum">Forum</button> where you can create and post your thoughts. Anonymous posts are allowed, but logging into the application can give your posts an advantage.</p>
         `;
         if (document.querySelector('#helloWorld')) {
             document.querySelector('#helloWorld').onclick = async function() {
@@ -59,6 +60,11 @@ vanilla.peasium = {
         if (document.querySelector('#userChange')) {
             document.querySelector('#userChange').onclick = async function() {
                 vanilla.loadjs('user', 'change');
+            }
+        }
+        if (document.querySelector('#viewForum')) {
+            document.querySelector('#viewForum').onclick = async function() {
+                vanilla.loadjs('forum', 'onload');
             }
         }
     },
