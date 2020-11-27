@@ -28,13 +28,14 @@ vanilla.peasium = {
     },
     loadHome: function() {
         vanilla.body.innerHTML = `<h3>Peasium</h3>
-        <p>Peasium is an easy-to-use web application framework. We believe development should be a fun, flexible, and creative experience. Peasium uses a simple bare-bones framework, so that developers do not need to spend all of their time and energy learning the framework and can instead focus on building new things.</p>
-        <p>Peasium was designed so that beginner web developers could walk through the codebase and understand how web applications function. Using the simplest approach is not always the industry best practice, however, Peasium is not meant for deployment of a production web application. For example, Peasium uses SQLite3 so that new developers do not need to learn how to setup a separate database.</p>
-        <p>Peasium separates its frontend views from its backend logic. The frontend is built in vanilla javascript. The backend is built in plain Php. Both of these scripting languages are used so that developers can augment the code and see the effects quickly. On the frontend, the 'vanilla' javascript object provides a few simple functions to help developers get started.</p>`;
+        <p>Peasium is an easy-to-use web framework. We believe development should be a fun, flexible, and creative experience. Peasium uses a simple bare-bones approach, so that developers can focus on building new things instead of spending hours just learning the framework itself. Peasium was designed so that beginner developers could explore the codebase and understand how web applications function in general.</p>
+        <p>Peasium uses the simplest approaches to demonstrate one approach to solving a miriad of problems. The simplest approach is not always industry best practice, however, Peasium is not meant for deploying a large-scale production application. For example: Peasium uses SQLite so that new developers do not need to learn how to setup a database. SQLite does not allow for concurrent connections, however, many of its queries are similar in syntax to production database languages.</p>
+        <p>Peasium uses as few dependencies as possible, allowing developers the freedom to augment their projects where needed. Peasium is developed using Ubuntu, Apache, and Php. Peasium separates its frontend views from its backend logic. The frontend is built in javascript. The backend is built in Php. Both of these scripting languages are used so that developers can quickly see the effects of code changes. On the frontend, the vanilla javascript 'library' provides a few simple functions to help new developers get started.</p>
+        `;
     },
     loadDocumentation: function() {
         vanilla.body.innerHTML = `<h3>Documentation</h3>
-        <p>Starting from the setup: Peasium is built on VirtualBox and Vagrant. VirtualBox is a virtualizer. That means that VirtualBox creates a virtual machine on your computer. With VirtualBox, you are able to test and tinker with many different settings without worrying about messing up any settings on your computer. Vagrant is a helper for VirtualBox that makes setting up and tearing down VMs easier.</p>
+        <p>Peasium is easiest when used with Vagrant and VirtualBox. VirtualBox allows users to run guest operating systems on a host computer. Vagrant is a helper program for VirtualBox that makes the "it works on my machine" excuse a relic of the past. Vagrant simplifies sharing directories across the guest and host machines.</p>
         `;
     },
     loadFeatures: function() {
