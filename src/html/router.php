@@ -23,19 +23,27 @@ if (isset($_GET['app']) && $_GET['app'] !== '') {
     $function = [DEFAULTAPP];
 }
 
-$app = $function[0] . 'Controller';
-if (is_file('../private/controllers/' . $app . '.php')) {
-    include_once('../private/controllers/' . $app . '.php');
+$controller = $function[0] . 'Controller';
+if (is_file('../private/controllers/' . $controller . '.php')) {
+    include_once('../private/controllers/' . $controller . '.php');
 } else {
-    exit('404 Error: Missing controller');
+    exit('404 Not Found: Missing controller');
 }
 
-$controller = new $app();
+if (class_exists($controller)) {
+    $controller = new $controller();
+} else {
+    exit('404 Not Found: Missing controller class');
+}
 if(count($function) == 1) {
     $controller->home();
 } else {
     $callFunction = $function[1];
-    $controller->$callFunction();
+    if (method_exists($controller, $callFunction)) {
+        $controller->$callFunction();
+    } else {
+        exit('404 Not Found: Missing function');
+    }
 }
 
 $stop = microtime(true);
