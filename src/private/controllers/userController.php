@@ -26,10 +26,12 @@ class userController extends controller {
         }
     }
 
+    /* returns a semi random alphanumeric string */
     private function semiRandom() {
         return md5(uniqid(rand(), true));
     }
 
+    /* takes the $user [password, salt, and count] to create a [hash] */
     private function hashPassword($user) {
         sleep(random_int(9999, 999999) * 0.000001);
         $hash = hash('md5', $user['password'] . $user['salt']);
@@ -39,6 +41,7 @@ class userController extends controller {
         return $hash;
     }
 
+    /* checks that a $user [username and password] match the database */
     private function checkUserPassword($user) {
         $stmt = $this->db->prepare("SELECT `hash`, `salt`, `count`
             FROM `users` WHERE `username`=:username;");
@@ -71,6 +74,7 @@ class userController extends controller {
         return false;
     }
 
+    /* Creates a $user with a [password and username] */
     private function createUser($user) {
         $user['salt'] = $this->semiRandom();
         $user['count'] = random_int(9999, 999999);
