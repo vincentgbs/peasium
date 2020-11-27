@@ -36,6 +36,16 @@ vanilla.peasium = {
     loadDocumentation: function() {
         vanilla.body.innerHTML = `<h3>Documentation</h3>
         <p>Peasium is easiest when used with Vagrant and VirtualBox. VirtualBox allows users to run guest operating systems on a host computer. Vagrant is a helper program for VirtualBox that makes the "it works on my machine" excuse a relic of the past. Vagrant simplifies sharing directories across the guest and host machines.</p>
+        <p>Although a virtual machine is not required to develop on Peasium, it is highly recommended. New developers often make mistakes. Running commands in the terminal can have unintended consequences on your computer. Virtual Machines separate the development environment from your host computer. VMs can easily be created and destroyed if you encounter a bug that you just can't solve. It is good practice to codify your development environment and VMs (and containers) encourage this positive habit.</p>
+        <p>After installing VirtualBox (https://www.virtualbox.org/) and Vagrant (https://www.vagrantup.com/), open Terminal. In your terminal, navigate to the directory where you would like to save your work. In order to change directories in terminal, enter the 'cd' (change directory) command, followed by the directory that you would like to go to.</p>
+        <pre>
+        cd ~/Documents
+        cd /var/www/html
+        cd /vagrant
+        pwd
+        cd ../
+        </pre>
+        <p>The ~ is the home directory of the active user. The / is the root directory of the entire Linux/Unix system. Within the virtual machine, /vagrant is the default shared directory between the guest and host machine. The 'pwd' (present woring directory) command will display the directory that you current terminal session is in. After you 'cd', the 'pwd' will display a different location. The ../ is the directory that contains the current directory that you are in.</p>
         `;
     },
     loadFeatures: function() {
