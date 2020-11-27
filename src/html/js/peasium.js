@@ -46,6 +46,7 @@ vanilla.peasium = {
         cd ../
         </pre>
         <p>The ~ is the home directory of the active user. The / is the root directory of the entire Linux/Unix system. Within the virtual machine, /vagrant is the default shared directory between the guest and host machine. The 'pwd' (present woring directory) command will display the directory that you current terminal session is in. After you 'cd', the 'pwd' will display a different location. The ../ is the directory that contains the current directory that you are in.</p>
+        <p>Once you are in the directory where you would like to save your work, download the Peasium repository. The 'git clone' command will download the repository. Git is a version management system used by most developers. 'git' the technology is separate from Github or Gitlab, although both companies are built on git. There are other version management systems, such as Mercurial, Subversion and Team Foundation Server.</p>
         `;
     },
     loadFeatures: function() {
