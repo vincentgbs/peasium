@@ -93,6 +93,15 @@ class userController extends controller {
         $_SESSION['username'] = $user['username'];
     }
 
+    private function checkLengths($variable, $key, $min, $max) {
+        if (strlen($variable[$key]) < $min) {
+            exit("That {$key} is too short");
+        }
+        if (strlen($variable[$key]) > $max) {
+            exit("That {$key} is too long");
+        }
+    }
+
     public function home() {
         if ($this->isUserLoggedIn()) {
             echo 'Logged In';
@@ -107,26 +116,16 @@ class userController extends controller {
                 $user = [
                     'username'=>$this->getJson('username', 'alphabetic'),
                     'password'=>$this->getJson('password', 'alphanumeric'),
-                    'confirm'=>$this->getJson('password', 'confirm')
+                    'confirm'=>$this->getJson('confirm', 'alphanumeric')
                 ];
                 if ($this->checkUserExists($user)) {
                     exit('That user already exists');
                 }
-                if (strlen($user['username']) < USERNAMEMINLEN) {
-                    exit('That username is too short');
-                }
-                if (strlen($user['username']) > USERNAMEMAXLEN) {
-                    exit('That username is too long');
-                }
+                $this->checkLengths($user, 'username', USERNAMEMINLEN, USERNAMEMAXLEN);
                 if ($user['password'] != $user['confirm']) {
                     exit('Password and confirmation do not match');
                 }
-                if (strlen($user['password']) < USERPASSMINLEN) {
-                    exit('That password is too short');
-                }
-                if (strlen($user['password']) > USERPASSMAXLEN) {
-                    exit('That password is too long');
-                }
+                $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
                 if ($this->createUser($user)) {
                     echo 'User created';
                 }
