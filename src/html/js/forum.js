@@ -3,12 +3,14 @@ vanilla.forum = {
         let posts = await vanilla.curl('forum', 'GET', null);
         posts = JSON.parse(posts);
         vanilla.body.innerHTML = `<div class="table" id="forumPosts">
-        <div class="tr">
-            <div class="td">Title</div>
-            <div class="td">Author</div>
-            <div class="td">Message</div>
-            <div class="td">Date</div>
-        </div></div><button id="deletePosts">Delete All Posts</button>
+            <div class="tr">
+                <div class="td">Title</div>
+                <div class="td">Author</div>
+                <div class="td">Message</div>
+                <div class="td">Date</div>
+            </div>
+        </div>
+        <button id="deletePosts">Delete All Posts</button>
         <hr/>
         <div class="form">
             <input type="text" id="title" placeholder="title"
@@ -58,29 +60,15 @@ vanilla.forum = {
         }
     },
     appendPost: function(post) {
-        let row = document.createElement('div');
-        row.setAttribute('class', 'tr');
-        let title = document.createElement('div');
-        title.setAttribute('class', 'td');
+        let title = vanilla.createDiv(false, 'td', post.title);
         title.setAttribute('postId', post.post_id);
-        title.innerText = post.title;
-        let author = document.createElement('div');
-        author.setAttribute('class', 'td');
-        author.innerText = post.author;
-        let message = document.createElement('div');
-        message.setAttribute('class', 'td');
-        message.innerText = post.post;
-        let timestamp = document.createElement('div');
-        timestamp.setAttribute('class', 'td');
-        timestamp.innerText = post.timestamp;
+        let author = vanilla.createDiv(false, 'td', post.author);
+        let message = vanilla.createDiv(false, 'td', post.post);
+        let timestamp = vanilla.createDiv(false, 'td', post.timestamp);
+        let row = vanilla.createRow([title, author, message, timestamp]);
         if (post.verified == 1) {
             row.classList.add("verified");
-            author.classList.add("verified");
         }
-        row.appendChild(title);
-        row.appendChild(author);
-        row.appendChild(message);
-        row.appendChild(timestamp);
         document.querySelector("#forumPosts").append(row);
     },
 }

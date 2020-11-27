@@ -3,7 +3,7 @@ vanilla.hello = {
         console.debug('hello.js loaded');
         let displayHello = await vanilla.curl('hello', 'GET', null);
         vanilla.body.innerHTML = `<div class="form">
-            <input type="text" id="getName" placeholder="name"/>
+            <input type="text" id="name" placeholder="name"/>
             <button id="helloWorld">Hello</button>
             <div id="displayHello">` + displayHello + `</div>
         </div>`;
@@ -15,7 +15,7 @@ vanilla.hello = {
         document.querySelector('#displayHello').innerHTML =
             await vanilla.curl(
                 'hello/home', 'POST',
-            {'name': document.querySelector('#getName').value}
+            {'name': document.querySelector('#name').value}
         );
     },
 }

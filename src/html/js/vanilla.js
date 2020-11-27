@@ -2,16 +2,14 @@ var vanilla = {
     settings: {
         flashMessageTimer: 2500,
     },
-    render: async function() {
-        vanilla.navigation = document.createElement('div');
-        vanilla.navigation.setAttribute('id', 'navigation');
+    render: function() {
+        vanilla.navigation = vanilla.createDiv('navigation');
         document.body.appendChild(vanilla.navigation);
-        vanilla.body = document.createElement('div');
-        vanilla.body.setAttribute('id', 'body');
+        vanilla.body = vanilla.createDiv('body');
         document.body.appendChild(vanilla.body);
-        let flashMessage = document.createElement('div');
-        flashMessage.setAttribute('id', 'flashMessage');
-        document.body.appendChild(flashMessage);
+        document.body.appendChild(
+            vanilla.createDiv('flashMessage')
+        );
         vanilla.loadjs('peasium', 'onload');
     },
     curl: function(url, method, body) {
@@ -69,6 +67,26 @@ var vanilla = {
         } else {
             element.value = element.value.replace(limit, '');
         }
+    },
+    createDiv: function(divId=false, divClass=false, divText=false) {
+        let div = document.createElement('div');
+        if (divId) {
+            div.setAttribute('id', divId);
+        }
+        if (divClass) {
+            div.setAttribute('class', divClass);
+        }
+        if (divText) {
+            div.innerText = divText;
+        }
+        return div;
+    },
+    createRow: function(datas) {
+        let row = vanilla.createDiv(false, 'tr');
+        for(let i = 0; i < datas.length; i++) {
+            row.appendChild(datas[i]);
+        }
+        return row;
     },
 }
 

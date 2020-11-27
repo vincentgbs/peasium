@@ -7,7 +7,8 @@ vanilla.peasium = {
     nav: function() {
         vanilla.navigation.innerHTML = `<div class="nav">
             <button class="navButton" id="home">Home</button>
-            <a href="https://github.com/vincentgbs/peasium"><button class="navButton">Github</button></a>
+            <a href="https://github.com/vincentgbs/peasium">
+                <button class="navButton">Github</button></a>
             <button class="navButton" id="documentation">Documentation</button>
             <button class="navButton" id="features">Features</button>
             <button class="navButton" id="tutorials">Tutorials</button>
