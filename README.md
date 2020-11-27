@@ -10,7 +10,7 @@ Peasium is easiest when used with Vagrant and VirtualBox. VirtualBox allows user
 * Install Vagrant (https://www.vagrantup.com/)
 * In terminal, navigate (cd) to the directory and type `vagrant up` to start the virtual machine (VM)
 * After the VM has started, type `vagrant ssh` to tunnel into (log into) the VM
-* From inside the VM, cd to the git repository directory and run the `setup.sh` script
+* From inside the VM, cd to the git repository directory and run the `./setup.sh` script
 
 ## Dependencies
 
