@@ -87,7 +87,7 @@ vanilla.peasium = {
         vanilla.body.innerHTML = `<h3>Features</h3>
         <p>Peasium provides a number of example controllers with ready-to-use functionality. The <button id="helloWorld">Hello World</button> controller is a standard function among many applications. The default message 'Hello World!' can be changed to greet a user by name through a POST request. The POST request will strip any non-alphabetic characters from the name in its response.</p>
         <p>The <button id="userLogin">User Login</button> example takes a simple approach to validating a user with a password. The default user 'root' has the password 'root' and will display the logged-in status of the user. The <button id="userRegister">Register</button> example allows new users to create a login with the username and password of their choice. There is also an example frontend form for <button id="userChange">Change Password</button> without a backend implementation. Using this form, you can learn Peasium while building your own backend implementation.</p>
-        <p>There is also an example <button id="viewForum">Forum</button> application where you can create and post messages. Anonymous posts are allowed, but logging into the application may give your posts an unexpected advantage.</p>
+        <p>There is also an example <button id="viewForum">Forum</button> application where you can create and post messages. Anonymous posts are allowed, but logging into the application may give your posts an unexpected advantage. You can also delete all the posts if your forum gets too crowded.</p>
         `;
         if (document.querySelector('#helloWorld')) {
             document.querySelector('#helloWorld').onclick = async function() {
