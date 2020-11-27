@@ -71,6 +71,7 @@ vanilla.peasium = {
         }
         </pre>
         <p>The $_GET variables in php returns key-value pairs of anything in the url after a ?. For example: http://test.com?key1=value1 would return 'value1' for $_GET['key1']. The router uses ?app= as the basis for calling specific controllers and their functions. If no ?app= is present in a request, the DEFAULTAPP is used. The DEFAULTAPP is set in the config. After the $_GET['app'] is filtered for any non-alphabetic characters, it is split on the / and the first parameter is used to call a controller. The second parameter is used to call the function within that controller. If no second parameter is present, then the home() function is called by default.</p>
+        <p>When the router calls a controller, that controller should inherit certain properties from the base controller. Inheritance is an important class concept in object oriented programming that helps you avoid duplicate code.</p>
         <p></p>
         `;
     },
