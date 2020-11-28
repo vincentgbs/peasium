@@ -124,7 +124,7 @@ vanilla.peasium = {
         &lt;div id="displayHello"&gt; + displayHello + &lt;/div&gt;
         </pre>
         <p>The router defaults to the home() function when a second parameter is not present. In the helloController, the home function simply: echoes 'Hello World!' If the backend were not functioning correctly, the router would not properly call helloController->home().</p>
-        <h3>Extender the helloController from the base controller</h3>
+        <h3>Extend the helloController from the base controller</h3>
         <p>Although the helloController is simple and does not need the extra overhead of all of the functions in the base controller. Extending the base controller can reduce some of the duplicated code in the helloController.</p>
         <pre>
         public function __construct() {
@@ -147,8 +147,6 @@ vanilla.peasium = {
         </pre>
         <p>Now that the helloController extends the base controller, you can delete the __construct() function all together. The helloController will automatically use the base controller's constructor and because no custom functionality is needed, you can omit that code. Finally replace the manual filtering of preg_replace with the base controller->getJson() function.</p>
         <pre>
-        echo 'Hello ' . preg_replace("/[^a-zA-Z]+/", "", $this->json['name']) . '!';
-
         echo 'Hello ' . $this->getJson('name', 'alphabetic') . '!';
         </pre>
         <p>The final updated code for the helloController is as follows:</p>
@@ -174,6 +172,9 @@ vanilla.peasium = {
 
         ?&gt;
         </pre>
+        <h3>Add the change password function</h3>
+        <p></p>
+        <pre></pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
