@@ -1,6 +1,6 @@
 var vanilla = {
     settings: {
-        flashMessageTimer: 2500,
+        flashMessageTimer: 3000,
     },
     render: function() {
         vanilla.navigation = vanilla.createDiv('navigation');

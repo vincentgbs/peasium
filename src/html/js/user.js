@@ -45,6 +45,7 @@ vanilla.user = {
                     'confirm': document.querySelector('#confirm').value});
             }
         }
+        vanilla.curl('hello', 'GET', null); /* check connection */
     },
     change: function() {
         vanilla.body.innerHTML = `<div class="form">
@@ -66,5 +67,6 @@ vanilla.user = {
                     'confirm': document.querySelector('#confirm').value});
             }
         }
+        vanilla.curl('hello', 'GET', null); /* check connection */
     }
 }
