@@ -2,7 +2,7 @@
 
 abstract class controller {
 
-    protected function __construct() {
+    public function __construct() {
         $this->headers = getallheaders();
         $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
         if ($this->headers['Content-Type'] == 'application/json') {
