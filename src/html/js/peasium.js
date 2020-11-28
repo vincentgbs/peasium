@@ -124,6 +124,27 @@ vanilla.peasium = {
         &lt;div id="displayHello"&gt; + displayHello + &lt;/div&gt;
         </pre>
         <p>The router defaults to the home() function when a second parameter is not present. In the helloController, the home function simply: echoes 'Hello World!' If the backend were not functioning correctly, the router would not properly call helloController->home().</p>
+        <h3>Extender the helloController from the base controller</h3>
+        <p>Although the helloController is simple and does not need the extra overhead of all of the functions in the base controller. Extending the base controller can reduce some of the duplicated code in the helloController.</p>
+        <pre>
+        public function __construct() {
+            $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
+            $this->json = json_decode(file_get_contents('php://input'), true);
+        }
+        </pre>
+        <p>from the helloController looks very similar to the constructor in the base controller: </p>
+        <pre>
+        $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
+        if ($this->headers['Content-Type'] == 'application/json') {
+            $this->json = json_decode(file_get_contents('php://input'), true);
+        }
+        </pre>
+        <p>First, include the file that contains the base controller. 'require_once 'controller.php';' And then add ' extends controller' to the class declaration of the helloController.</p>
+        <pre>
+        require_once 'controller.php';
+
+        class helloController extends controller {
+        </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
