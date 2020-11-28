@@ -186,9 +186,9 @@ vanilla.peasium = {
             /* implement a function that can change a users password */
         }
         </pre>
-        <p>First ensure that the request is a PUT request. In REST applications, the frontend can send: GET, POST, PUT, PATCH, DELETE and more requests. Although a DELETE request could send the same body parameters and could properly update the password, we want to restrict the functionality of the change password to the PUT request. This is not a REST application, however this example introduces some of the concepts from REST.</p>
+        <p>First ensure that the request is a POST request. In REST applications, the frontend can send: GET, POST, PUT, PATCH, DELETE and more requests. Although a DELETE request could send the same body parameters and could properly update the password, we want to restrict the functionality of the change password to the POST request. This is not a REST application, however this issue introduces some of the concepts from REST. In a REST application, this would be a PUT or a PATCH request because it is updating an object that already exists. In a REST application, GET reads an object, POST creates an object, PUT and PATCH update an object and DELETE removes an object.</p>
         <pre>
-        if ($this->method == 'PUT') {
+        if ($this->method == 'POST') {
             if (!($this->json == NULL) && !($this->json['oldpass'] === NULL)
             && !($this->json['newpass'] === NULL) && !($this->json['confirm'] === NULL)) {
                 /* implement code that can changes the password */

@@ -63,7 +63,7 @@ vanilla.user = {
             if (document.querySelector('#update')) {
                 document.querySelector('#update').onclick = async function() {
                     document.querySelector('#displayStatus').innerHTML =
-                        await vanilla.curl('user/updatePassword', 'PUT',
+                        await vanilla.curl('user/updatePassword', 'POST',
                         {'oldpass': document.querySelector('#oldpass').value,
                         'newpass': document.querySelector('#newpass').value,
                         'confirm': document.querySelector('#confirm').value});
