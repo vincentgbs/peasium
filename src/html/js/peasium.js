@@ -192,7 +192,20 @@ vanilla.peasium = {
             if (!($this->json == NULL) && !($this->json['oldpass'] === NULL)
             && !($this->json['newpass'] === NULL) && !($this->json['confirm'] === NULL)) {
                 /* implement code that can changes the password */
+                echo 'The POST is sending properly';
             }
+        }
+        </pre>
+        <p>When you are programming, you want to break down your tasks into small manageable iterations. After you have added this code, you should be able to use the change password form on the frontend to verify that your POST request is being received properly on the backend. Next you need to check that the old password matches the password in the system. The username is not sent in the request, but a user who is logged in has their username stored on the backend.</p>
+        <pre>
+        $user = [
+            'username'=> $_SESSION['username'],
+            'password'=>$this->getJson('oldpass', 'alphanumeric')];
+        if ($this->checkUserPassword($user)) {
+            /* implement code that can changes the password */
+            echo 'Updating password';
+        } else {
+            exit('Invalid password');
         }
         </pre>
 
