@@ -172,9 +172,29 @@ vanilla.peasium = {
 
         ?&gt;
         </pre>
-        <h3>Add the change password function</h3>
-        <p></p>
-        <pre></pre>
+        <h3>Add the change password function on the backend</h3>
+        <p>The frontend form for the change password function is already built, so you must build a backend that matches its specification. The frontend form dictates the endpoint and json that will be passed to the backend.</p>
+        <pre>
+        vanilla.curl('user/updatePassword', 'POST',
+        {'oldpass': document.querySelector('#oldpass').value,
+        'newpass': document.querySelector('#newpass').value,
+        'confirm': document.querySelector('#confirm').value});
+        </pre>
+        <p>The backend must accept those parameters and update the password in the sqlite database. First uncomment the updatePassword() function, so that the router can properly direct the request.</p>
+        <pre>
+        public function updatePassword() {
+            /* implement a function that can change a users password */
+        }
+        </pre>
+        <p>First ensure that the request is a PUT request. In REST applications, the frontend can send: GET, POST, PUT, PATCH, DELETE and more requests. Although a DELETE request could send the same body parameters and could properly update the password, we want to restrict the functionality of the change password to the PUT request. This is not a REST application, however this example introduces some of the concepts from REST.</p>
+        <pre>
+        if ($this->method == 'PUT') {
+            if (!($this->json == NULL) && !($this->json['oldpass'] === NULL)
+            && !($this->json['newpass'] === NULL) && !($this->json['confirm'] === NULL)) {
+                /* implement code that can changes the password */
+            }
+        }
+        </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>

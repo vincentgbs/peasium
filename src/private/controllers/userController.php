@@ -159,7 +159,7 @@ class userController extends controller {
         exit('Logged Out');
     }
 
-    // public function changePassword() {
+    // public function updatePassword() {
     //     /* implement a function that can change a users password */
     // }
 
