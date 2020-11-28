@@ -196,7 +196,7 @@ vanilla.peasium = {
             }
         }
         </pre>
-        <p>When you are programming, you want to break down your tasks into small manageable iterations. After you have added this code, you should be able to use the change password form on the frontend to verify that your POST request is being received properly on the backend. Next you need to check that the old password matches the password in the system. The username is not sent in the request, but a user who is logged in has their username stored on the backend.</p>
+        <p>When you are programming, you want to break down your tasks into small manageable iterations. After you have added this code, you should be able to use the change password form on the frontend to verify that your POST request is being received properly on the backend. Next you need to check that the old password matches the password in the system. The username is not sent in the request, but the username is stored on the backend in the SESSION variable.</p>
         <pre>
         $user = [
             'username'=> $_SESSION['username'],
@@ -207,6 +207,18 @@ vanilla.peasium = {
         } else {
             exit('Invalid password');
         }
+        </pre>
+        <p>After verifying that the backend properly accepts a valid password and properly rejects an invalid password, add the code that will change the password. First retrieve the 'newpass' and 'confirm' and make sure they match and meet any other password requirements. Create a private helper function that will update the user password. The helper function can be reused for other user functions, such as a reset password function.</p>
+        <pre>
+        $user = [
+            'username'=> $_SESSION['username'],
+            'password'=>$this->getJson('newpass', 'alphanumeric'),
+            'confirm'=>$this->getJson('confirm', 'alphanumeric')];
+        $this->checkLengths($user, 'username', USERNAMEMINLEN, USERNAMEMAXLEN);
+        if ($user['password'] != $user['confirm']) {
+            exit('Password and confirmation do not match');
+        }
+        $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
         </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
