@@ -153,7 +153,7 @@ vanilla.peasium = {
         </pre>
         <p>The final updated code for the helloController is as follows:</p>
         <pre>
-        <?php
+        &lt;?php
         require_once 'controller.php';
 
         class helloController extends controller {
@@ -172,7 +172,7 @@ vanilla.peasium = {
 
         }
 
-        ?>
+        ?&gt;
         </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
