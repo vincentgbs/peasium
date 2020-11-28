@@ -1,6 +1,6 @@
 ## About Peasium
 
-Peasium is an easy-to-use web framework. We believe development should be a fun, flexible, and creative experience. Peasium uses a simple bare-bones approach, so that developers can focus on building new things instead of spending hours just learning the framework itself. Peasium was designed so that beginner developers could explore the codebase and understand how web applications function in general.
+[Peasium](https://vincentgbs.github.io/peasium/src/html/index.html) is an easy-to-use web framework. We believe development should be a fun, flexible, and creative experience. Peasium uses a simple bare-bones approach, so that developers can focus on building new things instead of spending hours just learning the framework itself. Peasium was designed so that beginner developers could explore the codebase and understand how web applications function in general.
 
 ## Development Environment
 
