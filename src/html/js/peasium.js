@@ -208,7 +208,7 @@ vanilla.peasium = {
             exit('Invalid password');
         }
         </pre>
-        <p>After verifying that the backend properly accepts a valid password and properly rejects an invalid password, add the code that will change the password. First retrieve the 'newpass' and 'confirm' and make sure they match and meet any other password requirements. Create a private helper function that will update the user password. The helper function can be reused for other user functions, such as a reset password function.</p>
+        <p>After verifying that the backend properly accepts a valid password and properly rejects an invalid password, add the code that will change the password. First retrieve the 'newpass' and 'confirm' from the frontend, make sure they match, and ensure they meet any other password requirements.</p>
         <pre>
         $user['password'] = $this->getJson('newpass', 'alphanumeric');
         $user['confirm'] = $this->getJson('confirm', 'alphanumeric');
@@ -217,13 +217,52 @@ vanilla.peasium = {
             exit('Password and confirmation do not match');
         }
         $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
-
+        </pre>
+        <p>Create a private helper function that will update the user password. The helper function can be reused for other user functions, such as a reset password function. The object id (user_id) is often used to update objects, but in this case the 'username' is also a UNIQUE field within the 'users' table. The checkUserPassword function already exists, so it is easier to use it to validate the password. Instead of retrieving the user_id while checking the password. There could be a situation where database queries are a bottleneck to the system. In this case, you would want to include as few queries as possible. Since we don't have that constraint, we can query the database multiple times to ensure we have the information that we want. This is just one example of how many problems can be solved in a myriad of ways in software development. Each solution could depend on the constraints of your system.</p>
+        <pre>
         private function updateUserPassword($user) {
+            $user['salt'] = $this->semiRandom();
+            $user['count'] = random_int(9999, 999999);
             $user['hash'] = $this->hashPassword($user);
-            $stmt = $this->db->prepare("UPDATE users SET hash= :hash
-                WHERE user_id= :user_id;");
+            $stmt = $this->db->prepare("UPDATE users
+                SET hash=:hash, salt=:salt, count=:count
+                WHERE username= :username;");
             $stmt->bindValue(':hash', $user['hash'], SQLITE3_TEXT);
-            $stmt->bindValue(':user_id', $user['user_id'], SQLITE3_INTEGER);
+            $stmt->bindValue(':salt', $user['salt'], SQLITE3_TEXT);
+            $stmt->bindValue(':count', $user['count'], SQLITE3_INTEGER);
+            $stmt->bindValue(':username', $user['username'], SQLITE3_TEXT);
+            if($stmt->execute()) {
+                return true;
+            } else {
+                exit('Error updating user password');
+            }
+        }
+        </pre>
+        <p>The final backend functions for updating a user password should look like this:</p>
+        <pre>
+        public function updatePassword() {
+            if ($this->method == 'POST') {
+                if (!($this->json == NULL) && !($this->json['oldpass'] === NULL)
+                && !($this->json['newpass'] === NULL) && !($this->json['confirm'] === NULL)) {
+                    $user = [
+                        'username'=> $_SESSION['username'],
+                        'password'=>$this->getJson('oldpass', 'alphanumeric')];
+                    if ($this->checkUserPassword($user)) {
+                        $user['password'] = $this->getJson('newpass', 'alphanumeric');
+                        $user['confirm'] = $this->getJson('confirm', 'alphanumeric');
+                        $this->checkLengths($user, 'username', USERNAMEMINLEN, USERNAMEMAXLEN);
+                        if ($user['password'] != $user['confirm']) {
+                            exit('Password and confirmation do not match');
+                        }
+                        $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
+                        if($this->updateUserPassword($user)) {
+                            echo 'Password updated';
+                        }
+                    } else {
+                        exit('Invalid password');
+                    }
+                }
+            }
         }
         </pre>
 
