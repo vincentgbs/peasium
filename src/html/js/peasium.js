@@ -265,6 +265,22 @@ vanilla.peasium = {
             }
         }
         </pre>
+        <p>The user controller uses associative arrays instead of objects for simplicity. Let's walk through the conversion to an object oriented approach and see what the advantages and disadvantages are. Begin by creating an objects/ directory with in the private directory of the repository. Within that directory, create a user.php file.
+        /src/private/objects/user.php</p>
+        <pre>
+        &lt;?php
+
+        class user {
+        }
+        ?&gt;
+        </pre>
+        <p>In the userController, this file and object must now be imported. Remember to check that your code works at each step of the way during development. This will help you pinpoint issues when you make mistakes. You can test that the user object is importing correctly with a 'new user()' call within a function in the userController, then visit the corresponding url.</p>
+        <pre>
+        require_once '../objects/user.php';
+
+        /* Example check */
+        $check = new user();
+        </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
