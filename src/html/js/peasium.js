@@ -281,6 +281,15 @@ vanilla.peasium = {
         /* Example check */
         $check = new user();
         </pre>
+        <p>Within the new user class, you will need to add the properties and mehods that the user can access. Typically when creating a class, the properties are private and have publicly available setters and getters. A private property or method is one that can only be accessed by the class itself. For example: a private username within the user class cannot be read through the $user->username from the userController. Instead it has a public $user->getUsername() function that will return the value to the userController. This is to prevent unintended modifications and to allow stricter specifications for how a variable is changed. First, add all of the user attributes:</p>
+        <pre>
+        private string $username;
+        private string $password;
+        private string $confirm;
+        private string $hash;
+        private string $salt;
+        private int $count;
+        </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
