@@ -224,9 +224,9 @@ vanilla.peasium = {
             $user['salt'] = $this->semiRandom();
             $user['count'] = random_int(9999, 999999);
             $user['hash'] = $this->hashPassword($user);
-            $stmt = $this->db->prepare("UPDATE users
-                SET hash=:hash, salt=:salt, count=:count
-                WHERE username= :username;");
+            $stmt = $this->db->prepare("UPDATE \`users\`
+                SET \`hash\`=:hash, \`salt\`=:salt, \`count\`=:count
+                WHERE \`username\`= :username;");
             $stmt->bindValue(':hash', $user['hash'], SQLITE3_TEXT);
             $stmt->bindValue(':salt', $user['salt'], SQLITE3_TEXT);
             $stmt->bindValue(':count', $user['count'], SQLITE3_INTEGER);
@@ -290,13 +290,35 @@ vanilla.peasium = {
         private string $salt;
         private int $count;
         </pre>
-        <p>Each property typically has a public getter and setter. In the setter, we can use type hinting to make sure the property is only updated with its valid type. By using an object instead of an associative array, we can also use type hinting within the userController.</p>
+        <p>Each property typically has a public getter and setter. In the setter, we can use type hinting to make sure the property is only updated with its valid type. By using an object instead of an associative array, we can also add type hinting within the userController.</p>
         <pre>
         public function getUsername() {
             return $this->username;
         }
+
         public function setUsername(string $username) {
             $this->username = $username;
+        }
+        </pre>
+        <p>In addition, we can move some of the user related functions into the user object instead of having them in the controller.</p>
+        <pre>
+        private function createUserHash() {
+            $this->salt = $this->semiRandom();
+            $this->count = random_int(9999, 999999);
+            $this->hash = $this->hashPassword();
+        }
+
+        private function semiRandom() {
+            return md5(uniqid(rand(), true));
+        }
+
+        private function hashPassword() {
+            sleep(random_int(9999, 999999) * 0.000001);
+            $hash = hash('md5', $this->password . $this->salt);
+            for($i = 1; $i < $user['count']; $i++) {
+                $hash = hash('md5', $hash . $user['salt']);
+            }
+            return $hash;
         }
         </pre>
 
