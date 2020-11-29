@@ -302,17 +302,17 @@ vanilla.peasium = {
         </pre>
         <p>In addition, we can move some of the user related functions into the user object instead of having them in the controller.</p>
         <pre>
-        private function createUserHash() {
+        public function createUserHash() {
             $this->salt = $this->semiRandom();
             $this->count = random_int(9999, 999999);
             $this->hash = $this->hashPassword();
         }
 
-        private function semiRandom() {
+        public function semiRandom() {
             return md5(uniqid(rand(), true));
         }
 
-        private function hashPassword() {
+        public function hashPassword() {
             sleep(random_int(9999, 999999) * 0.000001);
             $hash = hash('md5', $this->password . $this->salt);
             for($i = 1; $i < $user['count']; $i++) {
@@ -322,7 +322,7 @@ vanilla.peasium = {
         }
         </pre>
 
-        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
+        <!-- <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
         <pre>
         RewriteEngine On
@@ -330,7 +330,7 @@ vanilla.peasium = {
         RewriteRule ^([a-zA-Z]+)?$ /router.php?app=$1 [QSA,L,NC]
         </pre>
         <p>'RewriteEngine On' must first be enabled with 'a2enmod rewrite' from the command line. This line means that apache will use the Rewrite Engine when processing requests.
-        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p>
+        <br/>'RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)?$ /router.php?app=$1/$2 [QSA,L,NC]' takes a group () of alphabetic (a-zA-Z) characters (+, meaning 1 or more) starting at the beginning of the url (^) up until the first slash (/) and matches them to the first variable in the GET request ($1). Similarly, any alphabetic characters after the first slash are matched to the $2. The rules are matched in the order they're listed.</p> -->
         `;
     },
 }
