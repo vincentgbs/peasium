@@ -290,6 +290,15 @@ vanilla.peasium = {
         private string $salt;
         private int $count;
         </pre>
+        <p>Each property typically has a public getter and setter. In the setter, we can use type hinting to make sure the property is only updated with its valid type. By using an object instead of an associative array, we can also use type hinting within the userController.</p>
+        <pre>
+        public function getUsername() {
+            return $this->username;
+        }
+        public function setUsername(string $username) {
+            $this->username = $username;
+        }
+        </pre>
 
         <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
