@@ -321,6 +321,28 @@ vanilla.peasium = {
             return $hash;
         }
         </pre>
+        <p>
+        Now we need to go through the userController and substitute the user object for the associative arrays that represent the user. It is easier to maintain a user object that does not use a database connection, so that there are no dependencies within the user object. This is the example for the $userController->checkUserPassword() function:
+        </p>
+        <pre>
+        private function checkUserPassword($user) {
+            $stmt = $this->db->prepare("SELECT \`hash\`, \`salt\`, \`count\`
+                FROM \`users\` WHERE \`username\`=:username;");
+            $stmt->bindValue(':username', $user->username, SQLITE3_TEXT);
+            $check = $stmt->execute();
+            if($check) {
+                $check = $check->fetchArray();
+                if ($check !== false) {
+                    $user->setSalt($check['salt']);
+                    $user->setCount($check['count']);
+                    if($check['hash'] == $user->hashPassword()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        </pre>
 
         <!-- <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
