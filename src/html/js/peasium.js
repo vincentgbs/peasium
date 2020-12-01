@@ -375,12 +375,52 @@ vanilla.peasium = {
             }
             return true;
         }
+
+        private function setLogin($user) {
+            $_SESSION['username'] = $user->getUsername();
+        }
+
+        private function checkLengths($variable, $getKey, $min, $max) {
+            if (strlen($variable->$getKey()) < $min) {
+                exit("That {$key} is too short");
+            }
+            if (strlen($variable->$getKey()) > $max) {
+                exit("That {$key} is too long");
+            }
+        }
         </pre>
         <p>The matching constructor for this example would look like the code below. It's worth noting that you could leave an empty constructor and just call the set functions from the controller after the object is created. The design of the constructor is dependent upon the most frequest use cases that the object will encounter.</p>
         <pre>
         public function __construct($array) {
             $this->setUsername($array['username']);
             $this->setPassword($array['password']);
+        }
+        </pre>
+        <p>Now that we've replaced all the helper functions with user objects, we will need to update the endpoint functions (functions that the router can access). The endpoint functions will need to convert the json object into a user object. You will need to make this conversion manually. Some frameworks, Java's Springboot framework for example, can automatically convert json objects into java objects.</p>
+        <pre>
+        public function register() {
+            if ($this->method == 'POST') {
+                if (!($this->json == NULL) && !($this->json['username'] === NULL)
+                && !($this->json['password'] === NULL) && !($this->json['confirm'] === NULL)) {
+                    $userArray = [
+                        'username'=>$this->getJson('username', 'alphabetic'),
+                        'password'=>$this->getJson('password', 'alphanumeric'),
+                        'confirm'=>$this->getJson('confirm', 'alphanumeric')
+                    ];
+                    if ($userArray['password'] != $userArray['confirm']) {
+                        exit('Password and confirmation do not match');
+                    }
+                    $user = new user($userArray);
+                    if ($this->checkUserExists($user)) {
+                        exit('That user already exists');
+                    }
+                    $this->checkLengths($user, 'getUsername', USERNAMEMINLEN, USERNAMEMAXLEN);
+                    $this->checkLengths($user, 'getPassword', USERPASSMINLEN, USERPASSMAXLEN);
+                    if ($this->createUser($user)) {
+                        echo 'User created';
+                    }
+                }
+            }
         }
         </pre>
 
