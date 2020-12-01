@@ -281,7 +281,7 @@ vanilla.peasium = {
         /* Example check */
         $check = new user();
         </pre>
-        <p>Within the new user class, you will need to add the properties and mehods that the user can access. Typically when creating a class, the properties are private and have publicly available setters and getters. A private property or method is one that can only be accessed by the class itself. For example: a private username within the user class cannot be read through the $user->username from the userController. Instead it has a public $user->getUsername() function that will return the value to the userController. This is to prevent unintended modifications and to allow stricter specifications for how a variable is changed. First, add all of the user attributes:</p>
+        <p>Within the new user class, you will need to add the properties and methods that the user can access. Typically when creating a class, the properties are private and have publicly available setters and getters. A private property or method is one that can only be accessed by the class itself. For example: a private username within the user class cannot be read through the $user->username from the userController. Instead it has a public $user->getUsername() function that will return the value to the userController. This is to prevent unintended modifications and to allow stricter specifications for how a variable is changed. First, add all of the user attributes:</p>
         <pre>
         private string $username;
         private string $password;
@@ -343,7 +343,7 @@ vanilla.peasium = {
             return false;
         }
         </pre>
-        <p>You can continue updating functions throughout the userController. Below are the example functions using the object instead of an array.</p>
+        <p>You can continue updating functions throughout the userController. Below are the example functions using the object instead of an array. Since the userController->createUser() function is the first place you encounter the new user object, you can build a constructor based on its use in thie function. As you continue to update the code, you may find that you need to adjust the constructor.</p>
         <pre>
         private function checkUserExists($user) {
             $stmt = $this->db->prepare("SELECT \`username\`
@@ -374,6 +374,13 @@ vanilla.peasium = {
                 exit($this->db->lastErrorMsg());
             }
             return true;
+        }
+        </pre>
+        <p>The matching constructor for this example would look like the code below. It's worth noting that you could leave an empty constructor and just call the set functions from the controller after the object is created. The design of the constructor is dependent upon the most frequest use cases that the object will encounter.</p>
+        <pre>
+        public function __construct($array) {
+            $this->setUsername($array['username']);
+            $this->setPassword($array['password']);
         }
         </pre>
 
