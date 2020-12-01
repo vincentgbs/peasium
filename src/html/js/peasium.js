@@ -322,7 +322,7 @@ vanilla.peasium = {
         }
         </pre>
         <p>
-        Now we need to go through the userController and substitute the user object for the associative arrays that represent the user. It is easier to maintain a user object that does not use a database connection, so that there are no dependencies within the user object. This is the example for the $userController->checkUserPassword() function:
+        Now we need to go through the userController and substitute the user object for the associative arrays that represent the user. It is easier to maintain a user object that does not require a database connection, so that there are no dependencies within the user object. This is the updated function for the $userController->checkUserPassword() using the user object:
         </p>
         <pre>
         private function checkUserPassword($user) {
