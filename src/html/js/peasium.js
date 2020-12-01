@@ -300,12 +300,12 @@ vanilla.peasium = {
             $this->username = $username;
         }
         </pre>
-        <p>In addition, we can move some of the user related functions into the user object instead of having them in the controller.</p>
+        <p>In addition, we can move some of the user related functions into the user object instead of having them in the controller. The random sleep command does not provide any functionality, but is included to bring your attention to timing attacks. It is not an actual defense against timing attacks, but instead an opportunity to highlight another potential system weakness.</p>
         <pre>
         public function createUserHash() {
-            $this->salt = $this->semiRandom();
-            $this->count = random_int(9999, 999999);
-            $this->hash = $this->hashPassword();
+            $this->setSalt($this->semiRandom());
+            $this->setCount(random_int(9999, 999999));
+            $this->setHash($this->hashPassword());
         }
 
         public function semiRandom() {
@@ -315,8 +315,8 @@ vanilla.peasium = {
         public function hashPassword() {
             sleep(random_int(9999, 999999) * 0.000001);
             $hash = hash('md5', $this->password . $this->salt);
-            for($i = 1; $i < $user['count']; $i++) {
-                $hash = hash('md5', $hash . $user['salt']);
+            for($i = 1; $i < $this->count; $i++) {
+                $hash = hash('md5', $hash . $this->salt);
             }
             return $hash;
         }
@@ -328,7 +328,7 @@ vanilla.peasium = {
         private function checkUserPassword($user) {
             $stmt = $this->db->prepare("SELECT \`hash\`, \`salt\`, \`count\`
                 FROM \`users\` WHERE \`username\`=:username;");
-            $stmt->bindValue(':username', $user->username, SQLITE3_TEXT);
+            $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
             $check = $stmt->execute();
             if($check) {
                 $check = $check->fetchArray();
@@ -341,6 +341,39 @@ vanilla.peasium = {
                 }
             }
             return false;
+        }
+        </pre>
+        <p>You can continue updating functions throughout the userController. Below are the example functions using the object instead of an array.</p>
+        <pre>
+        private function checkUserExists($user) {
+            $stmt = $this->db->prepare("SELECT \`username\`
+                FROM \`users\` WHERE \`username\`=:username;");
+            $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
+            $check = $stmt->execute();
+            if($check) {
+                $check = $check->fetchArray();
+                if ($check !== false) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private function createUser($array) {
+            $user = new user($array);
+            $user->createUserHash();
+            $stmt = $this->db->prepare("INSERT INTO \`users\`
+                (\`username\`, \`hash\`, \`salt\`, \`count\`) VALUES
+                (:username, :hash, :salt, :count);");
+            $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
+            $stmt->bindValue(':hash', $user->getHash(), SQLITE3_TEXT);
+            $stmt->bindValue(':salt', $user->getSalt(), SQLITE3_TEXT);
+            $stmt->bindValue(':count', $user->getCount(), SQLITE3_INTEGER);
+            if (!$stmt->execute()) {
+                echo 'Error creating user: ' . $user->getUsername() . '<br/>';
+                exit($this->db->lastErrorMsg());
+            }
+            return true;
         }
         </pre>
 
