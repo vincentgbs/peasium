@@ -325,7 +325,7 @@ vanilla.peasium = {
         Now we need to go through the userController and substitute the user object for the associative arrays that represent the user. It is easier to maintain a user object that does not require a database connection, so that there are no dependencies within the user object. This is the updated function for the $userController->checkUserPassword() using the user object:
         </p>
         <pre>
-        private function checkUserPassword($user) {
+        private function checkUserPassword(user $user) {
             $stmt = $this->db->prepare("SELECT \`hash\`, \`salt\`, \`count\`
                 FROM \`users\` WHERE \`username\`=:username;");
             $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
@@ -345,7 +345,7 @@ vanilla.peasium = {
         </pre>
         <p>You can continue updating functions throughout the userController. Below are the example functions using the object instead of an array. Since the userController->createUser() function is the first place you encounter the new user object, you can build a constructor based on its use in thie function. As you continue to update the code, you may find that you need to adjust the constructor.</p>
         <pre>
-        private function checkUserExists($user) {
+        private function checkUserExists(user $user) {
             $stmt = $this->db->prepare("SELECT \`username\`
                 FROM \`users\` WHERE \`username\`=:username;");
             $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
@@ -359,8 +359,7 @@ vanilla.peasium = {
             return false;
         }
 
-        private function createUser($array) {
-            $user = new user($array);
+        private function createUser(user $user) {
             $user->createUserHash();
             $stmt = $this->db->prepare("INSERT INTO \`users\`
                 (\`username\`, \`hash\`, \`salt\`, \`count\`) VALUES
@@ -380,7 +379,8 @@ vanilla.peasium = {
             $_SESSION['username'] = $user->getUsername();
         }
 
-        private function checkLengths($variable, $getKey, $min, $max) {
+        private function checkLengths($variable, $key, $min, $max) {
+            $getKey = 'get' . ucfirst($key);
             if (strlen($variable->$getKey()) < $min) {
                 exit("That {$key} is too short");
             }
@@ -414,15 +414,33 @@ vanilla.peasium = {
                     if ($this->checkUserExists($user)) {
                         exit('That user already exists');
                     }
-                    $this->checkLengths($user, 'getUsername', USERNAMEMINLEN, USERNAMEMAXLEN);
-                    $this->checkLengths($user, 'getPassword', USERPASSMINLEN, USERPASSMAXLEN);
+                    $this->checkLengths($user, 'username', USERNAMEMINLEN, USERNAMEMAXLEN);
+                    $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
                     if ($this->createUser($user)) {
                         echo 'User created';
                     }
                 }
             }
         }
+
+        public function login() {
+            if ($this->method == 'POST') {
+                if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
+                    $userArray = [
+                        'username'=>$this->getJson('username', 'alphabetic'),
+                        'password'=>$this->getJson('password', 'alphanumeric')];
+                    $user = new user($userArray);
+                    if ($this->checkUserPassword($user)) {
+                        $this->setLogin($user);
+                        echo 'Logged In';
+                    } else {
+                        exit('Invalid Login');
+                    }
+                }
+            }
+        }
         </pre>
+        <p>There are pros and cons to using objects versus associative arrays. In this example, our codebase is actually slightly longer with objects instead of arrays and the updated code will use slightly more memory because the associative arrays still need to exist for other functions. However, the functions can now use type hinting.</p>
 
         <!-- <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
