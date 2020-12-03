@@ -285,7 +285,6 @@ vanilla.peasium = {
         <pre>
         private string $username;
         private string $password;
-        private string $confirm;
         private string $hash;
         private string $salt;
         private int $count;
@@ -298,6 +297,38 @@ vanilla.peasium = {
 
         public function setUsername(string $username) {
             $this->username = $username;
+        }
+
+        public function getPassword() {
+            return $this->password;
+        }
+
+        public function setPassword(string $password) {
+            $this->password = $password;
+        }
+
+        public function getHash() {
+            return $this->hash;
+        }
+
+        public function setHash(string $hash) {
+            $this->hash = $hash;
+        }
+
+        public function getSalt() {
+            return $this->salt;
+        }
+
+        public function setSalt(string $salt) {
+            $this->salt = $salt;
+        }
+
+        public function getCount() {
+            return $this->count;
+        }
+
+        public function setCount(int $count) {
+            $this->count = $count;
         }
         </pre>
         <p>In addition, we can move some of the user related functions into the user object instead of having them in the controller. The random sleep command does not provide any functionality, but is included to bring your attention to timing attacks. It is not an actual defense against timing attacks, but instead an opportunity to highlight another potential system weakness.</p>
@@ -325,6 +356,12 @@ vanilla.peasium = {
         Now we need to go through the userController and substitute the user object for the associative arrays that represent the user. It is easier to maintain a user object that does not require a database connection, so that there are no dependencies within the user object. This is the updated function for the $userController->checkUserPassword() using the user object:
         </p>
         <pre>
+        private function checkUserTableMigration() {
+            ...
+            $user = new user(['username'=>'root', 'password'=>'root']);
+            ...
+        }
+
         private function checkUserPassword(user $user) {
             $stmt = $this->db->prepare("SELECT \`hash\`, \`salt\`, \`count\`
                 FROM \`users\` WHERE \`username\`=:username;");
