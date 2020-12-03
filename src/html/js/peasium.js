@@ -719,7 +719,7 @@ vanilla.peasium = {
 
         ?&gt;
         </pre>
-        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ requests are split. Apache allows for rewriting of requests to create prettier URLs.
+        <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ requests are handled. Apache allows for rewriting of requests to create prettier URLs. This can be implemented through the htaccess file or the config file.
         <br/>An example of apache's rerouting to create prettier urls:</p>
         <pre>
         RewriteEngine On
