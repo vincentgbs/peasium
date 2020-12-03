@@ -15,3 +15,14 @@ Peasium is easiest when used with Vagrant and VirtualBox. VirtualBox allows user
 ## Dependencies
 
 Peasium uses as few dependencies as possible, allowing developers the freedom to augment their projects where needed. Peasium is developed using Ubuntu, Apache, and Php.
+
+## Terminal
+On Mac the command line instructions to get the application running:
+```
+git clone https://github.com/vincentgbs/peasium.git
+vagrant up
+vagrant ssh
+cd /vagrant/setup
+chmod 700 ./setup.sh
+sudo ./setup.sh
+```
