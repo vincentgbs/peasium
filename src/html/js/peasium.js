@@ -418,10 +418,10 @@ vanilla.peasium = {
 
         private function checkLengths($variable, $key, $min, $max) {
             $getKey = 'get' . ucfirst($key);
-            if (strlen($variable->$getKey()) < $min) {
+            if (strlen($variable->$getKey()) &lt; $min) {
                 exit("That {$key} is too short");
             }
-            if (strlen($variable->$getKey()) > $max) {
+            if (strlen($variable->$getKey()) &gt; $max) {
                 exit("That {$key} is too long");
             }
         }
@@ -429,8 +429,12 @@ vanilla.peasium = {
         <p>The matching constructor for this example would look like the code below. It's worth noting that you could leave an empty constructor and just call the set functions from the controller after the object is created. The design of the constructor is dependent upon the most frequest use cases that the object will encounter.</p>
         <pre>
         public function __construct($array) {
-            $this->setUsername($array['username']);
-            $this->setPassword($array['password']);
+            if (isset($array['username'])) {
+                $this->setUsername($array['username']);
+            }
+            if (isset($array['password'])) {
+                $this->setPassword($array['password']);
+            }
         }
         </pre>
         <p>Now that we've replaced all the helper functions with user objects, we will need to update the endpoint functions (functions that the router can access). The endpoint functions will need to convert the json object into a user object. You will need to make this conversion manually. Some frameworks, Java's Springboot framework for example, can automatically convert json objects into java objects.</p>
@@ -477,7 +481,244 @@ vanilla.peasium = {
             }
         }
         </pre>
-        <p>There are pros and cons to using objects versus associative arrays. In this example, our codebase is actually slightly longer with objects instead of arrays and the updated code will use slightly more memory because the associative arrays still need to exist for other functions. However, the functions can now use type hinting.</p>
+        <p>There are pros and cons to using objects versus associative arrays. In this example, our codebase is actually slightly longer with objects instead of arrays and the updated code will use slightly more memory because the associative arrays still need to exist for other functions. However, the functions can now use type hinting. The final results for the user object and userController:</p>
+        <pre>
+        &lt;?php
+
+        class user {
+
+            private string $username;
+            private string $password;
+            private string $hash;
+            private string $salt;
+            private int $count;
+
+            public function __construct($array) {
+                if (isset($array['username'])) {
+                    $this->setUsername($array['username']);
+                }
+                if (isset($array['password'])) {
+                    $this->setPassword($array['password']);
+                }
+            }
+
+            public function createUserHash() {
+                $this->setSalt($this->semiRandom());
+                $this->setCount(random_int(9999, 999999));
+                $this->setHash($this->hashPassword());
+            }
+
+            public function semiRandom() {
+                return md5(uniqid(rand(), true));
+            }
+
+            public function hashPassword() {
+                sleep(random_int(9999, 999999) * 0.000001);
+                $hash = hash('md5', $this->password . $this->salt);
+                for($i = 1; $i < $this->count; $i++) {
+                    $hash = hash('md5', $hash . $this->salt);
+                }
+                return $hash;
+            }
+
+            public function getUsername() {
+                return $this->username;
+            }
+
+            public function setUsername(string $username) {
+                $this->username = $username;
+            }
+
+            public function getPassword() {
+                return $this->password;
+            }
+
+            public function setPassword(string $password) {
+                $this->password = $password;
+            }
+
+            public function getHash() {
+                return $this->hash;
+            }
+
+            public function setHash(string $hash) {
+                $this->hash = $hash;
+            }
+
+            public function getSalt() {
+                return $this->salt;
+            }
+
+            public function setSalt(string $salt) {
+                $this->salt = $salt;
+            }
+
+            public function getCount() {
+                return $this->count;
+            }
+
+            public function setCount(int $count) {
+                $this->count = $count;
+            }
+
+        }
+
+        ?&gt;
+
+        &lt;?php
+        require_once 'controller.php';
+        require_once '../private/objects/user.php';
+
+        class userController extends controller {
+
+            public function __construct() {
+                parent::__construct();
+                $this->checkUserTableMigration();
+            }
+
+            private function checkUserTableMigration() {
+                $checkUserTableExists = "SELECT COUNT(\`name\`) FROM \`sqlite_master\`
+                    WHERE \`type\`='table' AND \`name\`='users';";
+                if ($this->db->querySingle($checkUserTableExists) == 0) {
+                    $createUserTable = "CREATE TABLE \`users\`
+                        (\`user_id\` INTEGER PRIMARY KEY, \`username\` TEXT UNIQUE,
+                        \`hash\` TEXT, \`salt\` TEXT, \`count\` INTEGER,
+                        \`timestamp\` TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+                    if (!$this->db->exec($createUserTable)) {
+                        exit('Error creating \`users\` table');
+                    }
+                    $user = new user(['username'=>'root', 'password'=>'root']);
+                    if (!$this->checkUserExists($user)) {
+                        $this->createUser($user);
+                    }
+                }
+            }
+
+            private function checkUserPassword(user $user) {
+                $stmt = $this->db->prepare("SELECT \`hash\`, \`salt\`, \`count\`
+                    FROM \`users\` WHERE \`username\`=:username;");
+                $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
+                $check = $stmt->execute();
+                if($check) {
+                    $check = $check->fetchArray();
+                    if ($check !== false) {
+                        $user->setSalt($check['salt']);
+                        $user->setCount($check['count']);
+                        if($check['hash'] == $user->hashPassword()) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            private function checkUserExists(user $user) {
+                $stmt = $this->db->prepare("SELECT \`username\`
+                    FROM \`users\` WHERE \`username\`=:username;");
+                $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
+                $check = $stmt->execute();
+                if($check) {
+                    $check = $check->fetchArray();
+                    if ($check !== false) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            private function createUser(user $user) {
+                $user->createUserHash();
+                $stmt = $this->db->prepare("INSERT INTO \`users\`
+                    (\`username\`, \`hash\`, \`salt\`, \`count\`) VALUES
+                    (:username, :hash, :salt, :count);");
+                $stmt->bindValue(':username', $user->getUsername(), SQLITE3_TEXT);
+                $stmt->bindValue(':hash', $user->getHash(), SQLITE3_TEXT);
+                $stmt->bindValue(':salt', $user->getSalt(), SQLITE3_TEXT);
+                $stmt->bindValue(':count', $user->getCount(), SQLITE3_INTEGER);
+                if (!$stmt->execute()) {
+                    echo 'Error creating user: ' . $user->getUsername() . '&lt;br/&gt;';
+                    exit($this->db->lastErrorMsg());
+                }
+                return true;
+            }
+
+            private function setLogin($user) {
+                $_SESSION['username'] = $user->getUsername();
+            }
+
+            private function checkLengths($variable, $key, $min, $max) {
+                $getKey = 'get' . ucfirst($key);
+                if (strlen($variable->$getKey()) &lt; $min) {
+                    exit("That {$key} is too short");
+                }
+                if (strlen($variable->$getKey()) &gt; $max) {
+                    exit("That {$key} is too long");
+                }
+            }
+
+            public function home() {
+                if ($this->isUserLoggedIn()) {
+                    echo 'Logged In';
+                } else {
+                    echo 'Logged Out';
+                }
+            }
+
+            public function register() {
+                if ($this->method == 'POST') {
+                    if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
+                        $userArray = [
+                            'username'=>$this->getJson('username', 'alphabetic'),
+                            'password'=>$this->getJson('password', 'alphanumeric'),
+                            'confirm'=>$this->getJson('confirm', 'alphanumeric')
+                        ];
+                        if ($userArray['password'] != $userArray['confirm']) {
+                            exit('Password and confirmation do not match');
+                        }
+                        $user = new user($userArray);
+                        if ($this->checkUserExists($user)) {
+                            exit('That user already exists');
+                        }
+                        $this->checkLengths($user, 'username', USERNAMEMINLEN, USERNAMEMAXLEN);
+                        $this->checkLengths($user, 'password', USERPASSMINLEN, USERPASSMAXLEN);
+                        if ($this->createUser($user)) {
+                            echo 'User created';
+                        }
+                    }
+                }
+            }
+
+            public function login() {
+                if ($this->method == 'POST') {
+                    if (!($this->json == NULL) && !($this->json['username'] === NULL)) {
+                        $userArray = [
+                            'username'=>$this->getJson('username', 'alphabetic'),
+                            'password'=>$this->getJson('password', 'alphanumeric')];
+                        $user = new user($userArray);
+                        if ($this->checkUserPassword($user)) {
+                            $this->setLogin($user);
+                            echo 'Logged In';
+                        } else {
+                            exit('Invalid Login');
+                        }
+                    }
+                }
+            }
+
+            public function logout() {
+                session_unset();
+                session_destroy();
+                exit('Logged Out');
+            }
+
+            // public function updatePassword() {
+            //     /* implement a function that can change a users password */
+            // }
+
+        }
+
+        ?&gt;
+        </pre>
 
         <!-- <p>With the separation of the front and backend, routing is handled entirely through GET variables within the AJAX requests. All frontend calls are sent to the 'router.php' file where ?app=_____/_____ routes are split. Apache allows for rewriting of requests to create prettier URLs, but this exposes a simple routing approach.
         <br/>An example of apache's rerouting to create prettier urls:</p>
