@@ -276,7 +276,7 @@ vanilla.peasium = {
         </pre>
         <p>In the userController, this file and object must now be imported. Remember to check that your code works at each step of the way during development. This will help you pinpoint issues when you make mistakes. You can test that the user object is importing correctly with a 'new user()' call within a function in the userController, then visit the corresponding url.</p>
         <pre>
-        require_once '../objects/user.php';
+        require_once '../private/objects/user.php';
 
         /* Example check */
         $check = new user();
